@@ -14,6 +14,9 @@ export const getDataLink = async (url: string): Promise<IGetDataLinkReturn> => {
       'User-Agent': userAgent
     }
   });
+  if (response.status >= 400) {
+    throw new Error(`Link not accessible!: Status code: ${response.status}`);
+  };
   const contentType = response.headers.get('Content-Type');
   let nameFile = '';
   let href = '';

@@ -4,6 +4,7 @@ import myPackage from '../package.json';
 import { downloadFile } from "./helpers/downloadFile";
 import { getLinksByText } from './utils/getLinksByText';
 import { Browser } from './helpers/Browser';
+import path from 'node:path';
 
 // Arguments parse
 const args = process.argv.slice(2);
@@ -73,21 +74,32 @@ if (inputFile) {
     console.error(err);
     process.exit();
   }
+} else {
+  // of just one link passing by argument
+  const mediafireLink = args.find(arg => arg.includes('https://www.mediafire.com'));
+  if (!mediafireLink) {
+    console.error('No Mediafire link found it!')
+    process.exit();
+  }
+  links.push(mediafireLink);
 }
-
-// if is only one link passing by argument
-const mediafireLink = args.find(arg => arg.includes('https://www.mediafire.com'));
-if (!mediafireLink) {
-  console.error('No Mediafire link found it!')
-  process.exit();
-}
-links.push(mediafireLink);
 
 // Starting processing
 for await (const link of links) {
-  const { nameFile, href } = await getDataLink(link);
-  await downloadFile(href, `${outputDir}${nameFile}`)
+  try {
+    const { nameFile, href } = await getDataLink(link);
+    const destination = path.join(outputDir, nameFile);
+    console.log('Downloading …');
+    console.log(`From: ${link}`);
+    console.log(`To: ${destination}`);
+    await downloadFile(href, destination);
+  } catch (err) {
+    console.error(`Unprocessable download: ${link}`)
+    console.error(err);
+  }
+  console.log('\n');
 }
 
 const browser = new Browser();
 browser.close();
+process.exit();

@@ -26,9 +26,6 @@ export const downloadFile = (
         fs.unlink(destination, () => {});
         return downloadFile(response.headers.location!, destination).then(resolve)
       }
-      console.log('Downloading …');
-      console.log(`From: ${url}`);
-      console.log(`To: ${destination}`);
 
       response.pipe(file);
 
