@@ -1,6 +1,6 @@
-import { Browser } from './Browser';
-import { userAgent } from './userAgent';
+import * as cheerio from "cheerio";
 import { parse } from 'content-disposition-attachment';
+import { userAgent } from "../utils/userAgent.ts";
 
 interface IGetDataLinkReturn {
   nameFile: string;
@@ -9,7 +9,7 @@ interface IGetDataLinkReturn {
 
 export const getDataLink = async (url: string): Promise<IGetDataLinkReturn> => {
   const response = await fetch(url, {
-    method: 'HEAD',
+    method: 'GET',
     headers: {
       'User-Agent': userAgent
     }
@@ -34,10 +34,10 @@ export const getDataLink = async (url: string): Promise<IGetDataLinkReturn> => {
       }
     }
   } else {
-    const browser = new Browser();
-    const { fileName, href: hrefRaw } = await browser.getDataLink(url);
-    nameFile = fileName;
-    href = hrefRaw;
+    const html = await response.text();
+    const $ = cheerio.load(html);
+    nameFile = $(".dl-btn-label").attr('title') as string;
+    href = $('#downloadButton').attr('href') as string;
   }
 
   return {

@@ -1,5 +1,0 @@
-{
-    "terminal.integrated.env.windows": {
-      "NODE_OPTIONS": "--disable-warning=ExperimentalWarning"
-    }
-  }

@@ -1,0 +1,13 @@
+{
+  "version": "0.1.0",
+  "tasks": {
+    "start": "deno run --allow-net --allow-write --allow-env ./src/main.ts",
+    "build": "deno compile --allow-net --allow-write --allow-env -o ./dist/mediafiredl ./src/main.ts"
+  },
+  "imports": {
+    "@std/assert": "jsr:@std/assert@1",
+    "cheerio": "npm:cheerio@^1.0.0",
+    "content-disposition-attachment": "npm:content-disposition-attachment@^0.3.1",
+    "progress": "npm:progress@^2.0.3"
+  }
+}

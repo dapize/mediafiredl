@@ -30,7 +30,6 @@ export const downloadFile = (
       response.pipe(file);
 
       const fileLength = parseInt(response.headers["content-length"]!, 10);
-
       const bar = new ProgressBar(
         ":percent [:bar] :rate/bps :etas :elapsed",
         {
