@@ -1,6 +1,6 @@
-import * as cheerio from "cheerio";
+import * as cheerio from 'cheerio';
 import { parse } from 'content-disposition-attachment';
-import { userAgent } from "../utils/userAgent.ts";
+import { userAgent } from '../utils/userAgent.ts';
 
 interface IGetDataLinkReturn {
   nameFile: string;
@@ -16,7 +16,7 @@ export const getDataLink = async (url: string): Promise<IGetDataLinkReturn> => {
   });
   if (response.status >= 400) {
     throw new Error(`Link not accessible!: Status code: ${response.status}`);
-  };
+  }
   const contentType = response.headers.get('Content-Type');
   let nameFile = '';
   let href = '';
@@ -30,19 +30,18 @@ export const getDataLink = async (url: string): Promise<IGetDataLinkReturn> => {
         filename?: string;
       };
       if (filename) {
-        nameFile = filename
+        nameFile = filename;
       }
     }
   } else {
     const html = await response.text();
     const $ = cheerio.load(html);
-    nameFile = $(".dl-btn-label").attr('title') as string;
+    nameFile = $('.dl-btn-label').attr('title') as string;
     href = $('#downloadButton').attr('href') as string;
   }
 
   return {
     nameFile,
     href
-  }
-}
-
+  };
+};

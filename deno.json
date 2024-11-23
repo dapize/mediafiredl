@@ -2,12 +2,13 @@
   "version": "0.1.0",
   "tasks": {
     "start": "deno run --allow-net --allow-read --allow-write --allow-env ./src/main.ts",
-    "build": "deno compile --allow-net --allow-read --allow-write --allow-env -o ./dist/mediafiredl ./src/main.ts"
+    "build": "deno compile --allow-net --allow-read --allow-write --allow-env -o ./dist/mediafiredl ./src/main.ts",
+    "format": "npx prettier --write ./src --config ./.prettierrc"
   },
   "imports": {
-    "@std/assert": "jsr:@std/assert@1",
     "cheerio": "npm:cheerio@^1.0.0",
     "content-disposition-attachment": "npm:content-disposition-attachment@^0.3.1",
+    "prettier": "npm:prettier@^3.3.3",
     "progress": "npm:progress@^2.0.3"
   }
 }
