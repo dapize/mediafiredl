@@ -1,0 +1,34 @@
+{
+  "app": {
+    "description": "Descarga archivos y carpetas de MediaFire"
+  },
+  "arguments": {
+    "links": "Enlaces de archivos o carpetas de MediaFire",
+    "output": "Directorio de salida (predeterminado: directorio actual)",
+    "maxDownloads": "Descargas simultáneas máximas",
+    "inputFile": "Ruta a un archivo de texto que contiene enlaces de MediaFire",
+    "details": "Habilitar salida detallada (modo detallado)",
+    "inspect": "Obtiene información detallada sobre el enlace proporcionado sin descargar el archivo. Esto incluye el nombre del archivo, tamaño, tipo y otros metadatos disponibles.",
+    "beautify": "Devuelve con un formato embellecedor los datos a mostrar para la opción 'inspect'."
+  },
+  "metadata": {
+    "link": "Enlace",
+    "directLink": "Enlace directo",
+    "fileName": "Nombre del archivo",
+    "size": "Tamaño"
+  },
+  "errors": {
+    "notFoundInputFile": "Archivo de entrada no encontrado: {{filePath}}",
+    "inputFileAndArgLink": "No se pueden utilizar simultáneamente el archivo de entrada y los enlaces directos",
+    "noLinks": "No se proporcionan enlaces.",
+    "invalidLinks": "Enlaces inválidos",
+    "unknown": "Se produjo un error desconocido.",
+    "extractDetails": "No se pudo extraer el enlace de descarga o el nombre del archivo desde {{rawLink}}",
+    "fetchPureLink": "No se pudieron obtener los encabezados del enlace puro: {{statusText}}",
+    "invalidformat": "Formato inválido",
+    "invalidUnit": "Unidad no válida"
+  },
+  "messages": {
+    "downloadCompleted": "¡Descarga completa!"
+  }
+}

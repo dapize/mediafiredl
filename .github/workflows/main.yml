@@ -1,0 +1,184 @@
+name: Compile
+
+on:
+  push:
+    branches: main
+
+permissions:
+  contents: write
+
+jobs:
+  linux:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install Deno
+        uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+
+      - name: Install Requirements
+        run: 'deno install'
+
+      - name: Build step
+        run: 'deno compile --target x86_64-unknown-linux-gnu --allow-net --allow-read --allow-write --allow-env -o ./bin/mediafiredl_linux ./src/cli/commands.ts'
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-bin-${{ github.job }}
+          path: bin/mediafiredl_linux
+          compression-level: 0
+
+  macos_arm:
+    runs-on: macos-14
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install Deno
+        uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+
+      - name: Install Requirements
+        run: 'deno install'
+
+      - name: Build step
+        run: 'deno compile --allow-net --allow-read --allow-write --allow-env -o ./bin/mediafiredl_macos-arm64 ./src/cli/commands.ts'
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-bin-${{ github.job }}
+          path: bin/mediafiredl_macos-arm64
+          compression-level: 0
+
+  macos_intel:
+    runs-on: macos-13
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install Deno
+        uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+
+      - name: Install Requirements
+        run: 'deno install'
+
+      - name: Build step
+        run: 'deno compile --allow-net --allow-read --allow-write --allow-env -o ./bin/mediafiredl_macos-intel ./src/cli/commands.ts'
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-bin-${{ github.job }}
+          path: bin/mediafiredl_macos-intel
+          compression-level: 0
+
+  windows_intel:
+    runs-on: windows-latest
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install Deno
+        uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+
+      - name: Install Requirements
+        run: 'deno install'
+
+      - name: Build step
+        run: 'deno compile --allow-net --allow-read --allow-write --allow-env -o ./bin/mediafiredl_win-x86_64 ./src/cli/commands.ts'
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-bin-${{ github.job }}
+          path: bin/mediafiredl_win-x86_64.exe
+          compression-level: 0
+
+  windows_arm:
+    runs-on: self-hosted
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        id: setup-node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 23.3.0
+          cache: npm
+
+      - name: Install dependencies & Build
+        shell: bash
+        run: |
+          mv package.json_off package.json
+          npm i
+          npm run build
+          node compile-win-arm64.js
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-bin-${{ github.job }}
+          path: bin/mediafiredl_win-arm64.exe
+          compression-level: 0
+
+  release:
+    needs: [linux, macos_intel, macos_arm, windows_intel, windows_arm]
+    if: success()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set ENV vars
+        id: version
+        run: |
+          sudo apt-get install -y jq
+          echo "APP_VERSION=$(cat deno.json | jq -r '.version')" >> $GITHUB_ENV
+
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifact
+          pattern: build-bin-*
+          merge-multiple: true
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          tag_name: v${{ env.APP_VERSION }}
+          prerelease: false
+          draft: false
+          files: |
+            artifact/mediafiredl_linux
+            artifact/mediafiredl_win-arm64.exe
+            artifact/mediafiredl_win-x86_64.exe
+            artifact/mediafiredl_macos-arm64
+            artifact/mediafiredl_macos-intel
+          generate_release_notes: true
+          name: mediafiredl-${{ env.APP_VERSION }}
+          body: |
+            ${{ needs.changelog.outputs.clean_changelog }}

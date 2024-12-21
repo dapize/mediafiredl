@@ -1,0 +1,48 @@
+{
+  "name": "mediafiredl",
+  "version": "0.1.0",
+  "description": "A simple command line software to download mediafire files",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "npx tsx ./src/cli/commands.ts",
+    "build": "rm -rf ./dist/mediafiredl.cjs && npx esbuild --format=cjs --target=node23 --platform=node --bundle --outfile=./dist/mediafiredl.cjs ./src/cli/commands.ts",
+    "compile": "node compile-win-arm64.js",
+    "format": "npx prettier --write ./src --config ./.prettierrc"
+  },
+  "keywords": [],
+  "author": "Daniel P Z <danielpz@outlook.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dapize/mediafiredl.git"
+  },
+  "bugs": {
+    "url": "https://github.com/dapize/mediafiredl/issues"
+  },
+  "devDependencies": {
+    "@types/progress": "^2.0.7",
+    "@types/node": "^22.10.1",
+    "@types/utf8": "^3.0.3",
+    "@types/cli-progress": "^3.11.6",
+    "@types/i18n": "^0.13.12",
+    "@vitest/coverage-v8": "^2.1.8",
+    "esbuild": "^0.24.0",
+    "postject": "^1.0.0-alpha.6",
+    "prettier": "^3.4.1",
+    "tsx": "^4.19.2",
+    "vitest": "^2.1.8"
+  },
+  "dependencies": {
+    "@addasoft/timespan": "^1.1.4",
+    "utf8": "^3.0.0",
+    "commander": "^12.1.0",
+    "i18n": "^0.15.1",
+    "os-locale": "^6.0.2",
+    "chalk": "^5.3.0",
+    "cli-progress": "^3.12.0"
+  },
+  "engines": {
+    "node": ">=23.3.0"
+  }
+}
