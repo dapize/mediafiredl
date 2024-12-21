@@ -1,2 +1,2 @@
 export { ProgressBar } from './ProgressBar.ts';
-export type { IProgressBarConfig, IPayloadFormatBar } from './ProgressBar.d.ts';
+export type { IPayloadFormatBar, IProgressBarConfig } from './ProgressBar.d.ts';
