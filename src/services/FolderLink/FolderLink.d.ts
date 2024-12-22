@@ -1,10 +1,10 @@
 export interface IMediaFireFile {
-  links: {
-    normal_download: string;
-  };
+	links: {
+		normal_download: string;
+	};
 }
 
 export interface IMediaFireFolder {
-  folderkey: string;
-  name: string;
+	folderkey: string;
+	name: string;
 }

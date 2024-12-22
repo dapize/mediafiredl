@@ -1,5 +1,5 @@
 export interface ILinkDetails {
-  fileName: string;
-  url: string;
-  size: number;
+	fileName: string;
+	url: string;
+	size: number;
 }

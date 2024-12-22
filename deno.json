@@ -1,10 +1,13 @@
 {
-  "version": "0.1.0",
+  "version": "0.1.1",
   "tasks": {
     "start": "deno run --allow-net --allow-read --allow-write --allow-env --allow-sys --unstable-sloppy-imports ./src/cli/commands.ts",
     "build": "deno compile --allow-net --allow-read --allow-write --allow-env --allow-sys -o ./bin/mediafiredl ./src/cli/commands.ts",
-    "format": "npx prettier --write ./src --config ./.prettierrc",
-    "test": "vitest run --reporter verbose"
+    "test": "vitest run --reporter verbose",
+    "fm:check": "deno fmt --check",
+    "fm:fix": "deno fmt src/",
+    "lint:check": "deno lint",
+    "lint:fix": "deno lint --fix"
   },
   "imports": {
     "@addasoft/timespan": "npm:@addasoft/timespan@^1.1.4",
@@ -18,10 +21,23 @@
     "cli-progress": "npm:cli-progress@^3.12.0",
     "commander": "npm:commander@^12.1.0",
     "i18n": "npm:i18n@^0.15.1",
-    "os-locale": "npm:os-locale@^6.0.2",
-    "prettier": "npm:prettier@^3.4.1",
     "utf8": "npm:utf8@^3.0.0",
     "vitest": "npm:vitest@^2.1.8"
   },
-  "nodeModulesDir": "auto"
+  "nodeModulesDir": "auto",
+  "fmt": {
+    "useTabs": true,
+    "lineWidth": 140,
+    "indentWidth": 2,
+    "singleQuote": true,
+    "include": ["src/"]
+  },
+  "lint": {
+    "include": ["src/"],
+    "rules": {
+      "tags": ["recommended"],
+      "include": ["ban-untagged-todo"],
+      "exclude": ["no-unused-vars"]
+    }
+  }
 }

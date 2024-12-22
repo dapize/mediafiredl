@@ -4,6 +4,7 @@
     "npm:@addasoft/timespan@^1.1.4": "1.1.4_@types+node@22.10.1",
     "npm:@types/cli-progress@^3.11.6": "3.11.6",
     "npm:@types/i18n@~0.13.12": "0.13.12",
+    "npm:@types/node@*": "22.5.4",
     "npm:@types/node@^22.10.1": "22.10.1",
     "npm:@types/progress@^2.0.7": "2.0.7",
     "npm:@types/utf8@^3.0.3": "3.0.3",
@@ -12,9 +13,6 @@
     "npm:cli-progress@^3.12.0": "3.12.0",
     "npm:commander@^12.1.0": "12.1.0",
     "npm:i18n@~0.15.1": "0.15.1",
-    "npm:os-locale@^6.0.2": "6.0.2",
-    "npm:prettier@3.4.1": "3.4.1",
-    "npm:prettier@^3.4.1": "3.4.1",
     "npm:strip-ansi@^7.1.0": "7.1.0",
     "npm:utf8@3": "3.0.0",
     "npm:vitest@2.1.8": "2.1.8_@types+node@22.10.1_vite@5.4.11__@types+node@22.10.1",
@@ -524,9 +522,6 @@
         "mustache"
       ]
     },
-    "invert-kv@3.0.1": {
-      "integrity": "sha512-CYdFeFexxhv/Bcny+Q0BfOV+ltRlJcd4BBZBYFX/O0u4npJrgZtIcjokegtiSMAvlMTJ+Koq0GBCc//3bueQxw=="
-    },
     "is-fullwidth-code-point@3.0.0": {
       "integrity": "sha512-zymm5+u+sCsSWyD9qNaejV3DFvhCKclKdizYaJUuHA83RLjb7nSuGnddCHGv0hk+KY7BMAlsWeK4Ueg6EV6XQg=="
     },
@@ -564,12 +559,6 @@
       "dependencies": [
         "@isaacs/cliui",
         "@pkgjs/parseargs"
-      ]
-    },
-    "lcid@3.1.1": {
-      "integrity": "sha512-M6T051+5QCGLBQb8id3hdvIW8+zeFV2FyBGFS9IEK5H9Wt4MueD4bW1eWikpHgZp+5xR3l5c8pZUkQsIA0BFZg==",
-      "dependencies": [
-        "invert-kv"
       ]
     },
     "loupe@3.1.2": {
@@ -625,12 +614,6 @@
     "nanoid@3.3.7": {
       "integrity": "sha512-eSRppjcPIatRIMC1U6UngP8XFcz8MQWGQdt1MTBQ7NaAmvXDfvNxbvWV3x2y6CdEUciCSsDHDQZbhYaB8QEo2g=="
     },
-    "os-locale@6.0.2": {
-      "integrity": "sha512-qIb8bzRqaN/vVqEYZ7lTAg6PonskO7xOmM7OClD28F6eFa4s5XGe4bGpHUHMoCHbNNuR0pDYFeSLiW5bnjWXIA==",
-      "dependencies": [
-        "lcid"
-      ]
-    },
     "package-json-from-dist@1.0.1": {
       "integrity": "sha512-UEZIS3/by4OC8vL3P2dTXRETpebLI2NiI5vIrjaD/5UtrkFX/tNbwjTSRAGC/+7CAo2pIcBaRgWmcBBHcsaCIw=="
     },
@@ -660,9 +643,6 @@
         "picocolors",
         "source-map-js"
       ]
-    },
-    "prettier@3.4.1": {
-      "integrity": "sha512-G+YdqtITVZmOJje6QkXQWzl3fSfMxFwm1tjTyo9exhkmWSqC4Yhd1+lug++IlR2mvRVAxEDDWYkQdeSztajqgg=="
     },
     "rollup@4.27.2": {
       "integrity": "sha512-KreA+PzWmk2yaFmZVwe6GB2uBD86nXl86OsDkt1bJS9p3vqWuEQ6HnJJ+j/mZi/q0920P99/MVRlB4L3crpF5w==",
@@ -874,8 +854,6 @@
       "npm:cli-progress@^3.12.0",
       "npm:commander@^12.1.0",
       "npm:i18n@~0.15.1",
-      "npm:os-locale@^6.0.2",
-      "npm:prettier@^3.4.1",
       "npm:utf8@3",
       "npm:vitest@^2.1.8"
     ]
