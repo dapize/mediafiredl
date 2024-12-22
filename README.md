@@ -36,7 +36,7 @@ Optiones:
 
 ## 🔧 Installation
 
-Just you have to go to the [Release Page](https://github.com/dapize/mediafiredl/releases/tag/v0.1.0) to get the correct binary. Supported operating systems are: Linux, Windows (Intel and ARM), Mac (Intel and ARM)
+Just you have to go to the [Release Page](https://github.com/dapize/mediafiredl/releases) to get the correct binary. Supported operating systems are: Linux, Windows (Intel and ARM), Mac (Intel and ARM)
 
 ```bash
 ## Example for Linux installation

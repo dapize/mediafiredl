@@ -36,7 +36,7 @@ Optiones:
 
 ## 🔧 Instalación
 
-Solo tienes que ir a la [página de lanzamiento](https://github.com/dapize/mediafiredl/releases/tag/v0.1.0) para obtener el binario correcto. Los sistemas operativos compatibles son: Linux, Windows (Intel y ARM), Mac (Intel y ARM). Es portable
+Solo tienes que ir a la [página de lanzamiento](https://github.com/dapize/mediafiredl/releases) para obtener el binario correcto. Los sistemas operativos compatibles son: Linux, Windows (Intel y ARM), Mac (Intel y ARM). Es portable
 
 ```bash
 ## Ejemplo de una instalación en linux
