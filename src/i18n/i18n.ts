@@ -3,8 +3,9 @@ import EsTranslation from './locales/es.json' with { type: 'json' };
 import EnTranslation from './locales/en.json' with { type: 'json' };
 import { getOsLanguage } from '../utils/getOsLanguage/getOsLanguage.ts';
 
+const locales = ['es', 'en'];
 i18n.configure({
-	locales: ['es', 'en'],
+	locales,
 	defaultLocale: 'es',
 	staticCatalog: {
 		es: EsTranslation,
@@ -13,6 +14,9 @@ i18n.configure({
 	objectNotation: true,
 });
 
-i18n.setLocale(getOsLanguage());
+const osLanguage = getOsLanguage();
+if (locales.includes(osLanguage)) {
+	i18n.setLocale(osLanguage);
+}
 
 export { i18n };

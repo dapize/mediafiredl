@@ -22,7 +22,7 @@ vi.mock('node:global', () => ({
 	),
 }));
 
-vi.mock('../../utils/ProgressBar/index.ts', () => ({
+vi.mock('../../helpers/ProgressBar/index.ts', () => ({
 	ProgressBar: vi.fn().mockImplementation(() => ({
 		multiBar: {
 			create: vi.fn(() => ({
@@ -35,7 +35,7 @@ vi.mock('../../utils/ProgressBar/index.ts', () => ({
 }));
 
 vi.mock('../../utils/formatBytes/index.ts', () => ({
-	formatBytes: (bytes) => `${bytes}B`,
+	formatBytes: (bytes: number) => `${bytes}B`,
 }));
 
 vi.mock('../../utils/checkAndCreateFolder/index.ts', () => ({

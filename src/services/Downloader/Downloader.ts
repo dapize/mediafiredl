@@ -4,7 +4,7 @@ import Events from 'node:events';
 import timespan from '@addasoft/timespan';
 import chalk from 'chalk';
 import type { IDownloaderConfig, ILinkQueue, IMetadata, IWriteDiskArgs } from './Downloader.d.ts';
-import { ProgressBar } from '../../utils/ProgressBar/index.ts';
+import { ProgressBar } from '../../helpers/ProgressBar/index.ts';
 import { formatBytes } from '../../utils/formatBytes/index.ts';
 import { checkAndCreateFolder } from '../../utils/checkAndCreateFolder/index.ts';
 import { FileLink, ILinkDetails } from '../FileLink/index.ts';

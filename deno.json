@@ -1,9 +1,8 @@
 {
-  "version": "0.1.0",
+  "version": "0.1.1",
   "tasks": {
     "start": "deno run --allow-net --allow-read --allow-write --allow-env --allow-sys --unstable-sloppy-imports ./src/cli/commands.ts",
     "build": "deno compile --allow-net --allow-read --allow-write --allow-env --allow-sys -o ./bin/mediafiredl ./src/cli/commands.ts",
-    "format": "npx prettier --write ./src --config ./.prettierrc",
     "test": "vitest run --reporter verbose",
     "fm:check": "deno fmt --check",
     "fm:fix": "deno fmt src/",
@@ -22,7 +21,6 @@
     "cli-progress": "npm:cli-progress@^3.12.0",
     "commander": "npm:commander@^12.1.0",
     "i18n": "npm:i18n@^0.15.1",
-    "os-locale": "npm:os-locale@^6.0.2",
     "utf8": "npm:utf8@^3.0.0",
     "vitest": "npm:vitest@^2.1.8"
   },
