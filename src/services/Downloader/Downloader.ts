@@ -81,10 +81,10 @@ export class Downloader extends Events {
 	private showMetadata({ link, url, fileName, size }: IMetadata) {
 		if (this.beautify) {
 			return console.log(
-				`${chalk.magenta(i18n.__('metadata.link'))} ${link}\n` +
-					`${chalk.cyanBright(i18n.__('metadata.directLink'))} ${url}\n` +
-					`${chalk.greenBright(i18n.__('metadata.fileName'))} ${fileName}\n` +
-					`${chalk.blue(i18n.__('metadata.size'))} ${formatBytes(size)}\n`,
+				`${chalk.magenta(`${i18n.__('metadata.link')}:`)} ${link}\n` +
+					`${chalk.cyanBright(`${i18n.__('metadata.directLink')}:`)} ${url}\n` +
+					`${chalk.greenBright(`${i18n.__('metadata.fileName')}:`)} ${fileName}\n` +
+					`${chalk.blue(`${i18n.__('metadata.size')}:`)} ${formatBytes(size)}\n`,
 			);
 		}
 		const jsonFormat = {
