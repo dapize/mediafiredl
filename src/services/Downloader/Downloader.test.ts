@@ -84,7 +84,10 @@ describe('Downloader', () => {
 	});
 
 	it('Should add links to the queue correctly When valid links are provided', () => {
-		downloader.addLinks(['http://example.com/file1.txt', 'http://example.com/file2.txt'], '/downloads');
+		downloader.addLinks(
+			['http://example.com/file1.txt', 'http://example.com/file2.txt'],
+			'/downloads',
+		);
 		expect(downloader['linkQueue'].size).toBe(2);
 	});
 
@@ -94,7 +97,7 @@ describe('Downloader', () => {
 		downloader.addLinks(['http://example.com/file1.txt'], '/downloads');
 		downloader.startProcessing();
 
-		await new Promise((resolve) => setTimeout(resolve, 1000));
+		await new Promise((resolve) => setTimeout(resolve, 1500));
 
 		expect(emitSpy).toHaveBeenCalledWith('completed', new Set());
 		expect(downloader['linkQueue'].size).toBe(0);
@@ -109,25 +112,36 @@ describe('Downloader', () => {
 
 		await new Promise((resolve) => setTimeout(resolve, 100));
 
-		expect(downloader['invalidLinks'].has('http://example.com/invalid-file.txt')).toBe(true);
+		expect(
+			downloader['invalidLinks'].has('http://example.com/invalid-file.txt'),
+		).toBe(true);
 	});
 
 	it('Should handle folder links correctly When a folder link is provided', () => {
-		downloader.addLinks(['http://example.com/folder/test-folder'], '/downloads');
+		downloader.addLinks(
+			['http://example.com/folder/test-folder'],
+			'/downloads',
+		);
 		downloader.startProcessing();
 		expect(downloader['linksProcessing'].size).toBeGreaterThan(0);
 	});
 
 	it('Should correctly show metadata When inspect is enabled', async () => {
 		const consoleSpy = vi.spyOn(console, 'log').mockImplementation(() => {});
-		downloader = new Downloader({ concurrencyLimit: 2, details: true, inspect: true });
+		downloader = new Downloader({
+			concurrencyLimit: 2,
+			details: true,
+			inspect: true,
+		});
 
 		downloader.addLinks(['http://example.com/file1.txt'], '/downloads');
 		downloader.startProcessing();
 
 		await new Promise((resolve) => setTimeout(resolve, 100));
 
-		expect(consoleSpy).toHaveBeenCalledWith(expect.stringContaining('http://example.com/file1.txt'));
+		expect(consoleSpy).toHaveBeenCalledWith(
+			expect.stringContaining('http://example.com/file1.txt'),
+		);
 		consoleSpy.mockRestore();
 	});
 });

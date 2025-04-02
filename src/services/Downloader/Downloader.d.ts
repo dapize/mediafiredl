@@ -18,10 +18,16 @@ export interface IPayloadFormatBar {
 	eta: string;
 }
 
+export interface CustomSingleBar {
+	completed: () => void;
+	update: (downloader: number) => void;
+	instance: SingleBar;
+}
+
 export interface IWriteDiskArgs {
 	reader: ReadableStreamDefaultReader<Uint8Array>;
 	filePath: string;
-	progressBar: SingleBar;
+	progressBar: CustomSingleBar;
 }
 
 export interface ILinkQueue {

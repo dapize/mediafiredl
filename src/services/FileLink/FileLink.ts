@@ -3,6 +3,7 @@ import utf8 from 'utf8';
 import type { ILinkDetails } from './FileLink.d.ts';
 import { i18n } from '../../i18n/i18n.ts';
 import { convertToBytes } from '../../utils/convertToBytes/index.ts';
+import { fakeHeaders } from './../../utils/fakeHeaders.ts';
 
 export class FileLink {
 	private rawLink: string;
@@ -16,7 +17,10 @@ export class FileLink {
 	}
 
 	public async isAvailable(): Promise<boolean> {
-		const response = await fetch(this.rawLink, { method: 'HEAD', redirect: 'manual' });
+		const response = await fetch(this.rawLink, {
+			method: 'HEAD',
+			redirect: 'manual',
+		});
 		const status = response.status;
 
 		if (status >= 400) {
@@ -42,21 +46,35 @@ export class FileLink {
 		return await this.extractDetailsFromNoPremiumLink();
 	}
 
-	private async extractDetailsFromNoPremiumLink(): Promise<ILinkDetails> {
+	private async extractDetailsFromNoPremiumLink(
+		headers?: Headers,
+	): Promise<ILinkDetails> {
 		const rawLink = this.rawLink;
-		const response = await fetch(rawLink);
+		const response = await fetch(rawLink, {
+			headers: headers || {},
+		});
 		const html = await response.text();
 
-		const directLinkMatch = html.match(/<a[^>]*aria-label="Download file"[^>]*href="([^"]+)"/);
-		const fileNameMatch = html.match(/<div[^>]*class="dl-btn-label"[^>]*title="([^"]+)"/);
+		const directLinkMatch = html.match(
+			/<a[^>]*aria-label="Download file"[^>]*href="([^"]+)"/,
+		);
+		const fileNameMatch = html.match(
+			/<div[^>]*class="dl-btn-label"[^>]*title="([^"]+)"/,
+		);
 		const fileSizeMatch = html.match(/Download \(([\d.]+\s?[KMGT]?[B])\)/);
 
 		if (!directLinkMatch || !fileNameMatch || !fileSizeMatch) {
 			throw new Error(i18n.__('errors.extractDetails', { rawLink }));
 		}
 
+		// fallback logic for new download page UI
+		const pureLink = directLinkMatch[1];
+		if (pureLink === '#') {
+			return await this.extractDetailsFromNoPremiumLink(fakeHeaders);
+		}
+
 		return {
-			url: directLinkMatch[1],
+			url: pureLink,
 			fileName: utf8.decode(decodeURIComponent(fileNameMatch[1])),
 			size: convertToBytes(fileSizeMatch[1]),
 		};
@@ -66,7 +84,9 @@ export class FileLink {
 		const pureLink = this.directLink!;
 		const response = await fetch(pureLink, { method: 'HEAD' });
 		if (!response.ok) {
-			throw new Error(i18n.__('errors.fetchPureLink', { statusText: response.statusText }));
+			throw new Error(
+				i18n.__('errors.fetchPureLink', { statusText: response.statusText }),
+			);
 		}
 
 		const contentDisposition = response.headers.get('Content-Disposition');
