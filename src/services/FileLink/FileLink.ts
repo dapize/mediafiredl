@@ -4,6 +4,7 @@ import type { ILinkDetails } from './FileLink.d.ts';
 import { i18n } from '../../i18n/i18n.ts';
 import { convertToBytes } from '../../utils/convertToBytes/index.ts';
 import { fakeHeaders } from './../../utils/fakeHeaders.ts';
+import { sanitizeFileName } from '../../helpers/sanitizeFileName.ts';
 
 export class FileLink {
 	private rawLink: string;
@@ -75,7 +76,7 @@ export class FileLink {
 
 		return {
 			url: pureLink,
-			fileName: utf8.decode(decodeURIComponent(fileNameMatch[1])),
+			fileName: utf8.decode(sanitizeFileName(fileNameMatch[1])),
 			size: convertToBytes(fileSizeMatch[1]),
 		};
 	}

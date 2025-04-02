@@ -42,7 +42,9 @@ export class Downloader extends Events {
 	}
 
 	private checkIfContinueDownloading(): boolean {
-		return Boolean(this.linkQueue.size && this.linksProcessing.size < this.concurrencyLimit);
+		return Boolean(
+			this.linkQueue.size && this.linksProcessing.size < this.concurrencyLimit,
+		);
 	}
 
 	private processLinks() {
@@ -67,7 +69,8 @@ export class Downloader extends Events {
 	private async processFileLink(link: string, output: string): Promise<void> {
 		const linkMetadata = await this.getMetadata(link);
 		if (!linkMetadata) {
-			Promise.resolve();
+			// deno-lint-ignore ban-untagged-todo
+			Promise.resolve(); // TODO extends this part in the new version
 			return;
 		}
 
@@ -83,7 +86,11 @@ export class Downloader extends Events {
 			return console.log(
 				`${chalk.magenta(`${i18n.__('metadata.link')}:`)} ${link}\n` +
 					`${chalk.cyanBright(`${i18n.__('metadata.directLink')}:`)} ${url}\n` +
-					`${chalk.greenBright(`${i18n.__('metadata.fileName')}:`)} ${fileName}\n` +
+					`${
+						chalk.greenBright(
+							`${i18n.__('metadata.fileName')}:`,
+						)
+					} ${fileName}\n` +
 					`${chalk.blue(`${i18n.__('metadata.size')}:`)} ${formatBytes(size)}\n`,
 			);
 		}
@@ -106,7 +113,10 @@ export class Downloader extends Events {
 		return await fileLink.getDetails();
 	}
 
-	private async downloadFileLink({ url, fileName, size }: ILinkDetails, output: string): Promise<void> {
+	private async downloadFileLink(
+		{ url, fileName, size }: ILinkDetails,
+		output: string,
+	): Promise<void> {
 		const response = await fetch(url);
 		const reader = response.body!.getReader();
 		const absolutePath = path.resolve(output);
@@ -122,7 +132,10 @@ export class Downloader extends Events {
 		progressBar.instance.stop();
 	}
 
-	private async extractFolderLinks(link: string, output: string): Promise<void> {
+	private async extractFolderLinks(
+		link: string,
+		output: string,
+	): Promise<void> {
 		const folderLink = new FolderLink(link);
 		const links = await folderLink.getLinks();
 		const folderName = folderLink.getFolderName();
@@ -142,7 +155,11 @@ export class Downloader extends Events {
 		});
 	}
 
-	private async writeToDisk({ reader, filePath, progressBar }: IWriteDiskArgs): Promise<void> {
+	private async writeToDisk({
+		reader,
+		filePath,
+		progressBar,
+	}: IWriteDiskArgs): Promise<void> {
 		const fileStream = fs.createWriteStream(filePath);
 		let downloaded = 0;
 		while (true) {
