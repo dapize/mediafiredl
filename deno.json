@@ -1,5 +1,5 @@
 {
-  "version": "0.1.1",
+  "version": "0.2.0",
   "tasks": {
     "start": "deno run --allow-net --allow-read --allow-write --allow-env --allow-sys --unstable-sloppy-imports ./src/cli/commands.ts",
     "build": "deno compile --allow-net --allow-read --allow-write --allow-env --allow-sys -o ./bin/mediafiredl ./src/cli/commands.ts",
