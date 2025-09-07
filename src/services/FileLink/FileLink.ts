@@ -56,9 +56,16 @@ export class FileLink {
 		});
 		const html = await response.text();
 
-		const directLinkMatch = html.match(
+		let directLinkMatch = html.match(
 			/<a[^>]*aria-label="Download file"[^>]*href="([^"]+)"/,
 		);
+		let pureLink = directLinkMatch![1];
+		if (pureLink.includes('javascript:')) {
+			directLinkMatch = html.match(
+				/<a[^>]*aria-label="Download file"[^>]*data-scrambled-url="([^"]+)"/,
+			);
+			pureLink = atob(directLinkMatch![1]);
+		}
 		const fileNameMatch = html.match(
 			/<div[^>]*class="dl-btn-label"[^>]*title="([^"]+)"/,
 		);
@@ -69,7 +76,6 @@ export class FileLink {
 		}
 
 		// fallback logic for new download page UI
-		const pureLink = directLinkMatch[1];
 		if (pureLink === '#') {
 			return await this.extractDetailsFromNoPremiumLink(fakeHeaders);
 		}

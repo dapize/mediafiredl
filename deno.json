@@ -1,5 +1,5 @@
 {
-  "version": "0.2.0",
+  "version": "0.3.0",
   "tasks": {
     "start": "deno run --allow-net --allow-read --allow-write --allow-env --allow-sys --unstable-sloppy-imports ./src/cli/commands.ts",
     "build": "deno compile --allow-net --allow-read --allow-write --allow-env --allow-sys -o ./bin/mediafiredl ./src/cli/commands.ts",
@@ -10,10 +10,9 @@
     "lint:fix": "deno lint --fix"
   },
   "imports": {
-    "@addasoft/timespan": "npm:@addasoft/timespan@^1.1.4",
     "@types/cli-progress": "npm:@types/cli-progress@^3.11.6",
     "@types/i18n": "npm:@types/i18n@^0.13.12",
-    "@types/node": "npm:@types/node@^22.10.1",
+    "@types/node": "npm:@types/node@^24.3.1",
     "@types/progress": "npm:@types/progress@^2.0.7",
     "@types/utf8": "npm:@types/utf8@^3.0.3",
     "@vitest/coverage-v8": "npm:@vitest/coverage-v8@^2.1.8",
@@ -30,14 +29,24 @@
     "lineWidth": 140,
     "indentWidth": 2,
     "singleQuote": true,
-    "include": ["src/"]
+    "include": [
+      "src/"
+    ]
   },
   "lint": {
-    "include": ["src/"],
+    "include": [
+      "src/"
+    ],
     "rules": {
-      "tags": ["recommended"],
-      "include": ["ban-untagged-todo"],
-      "exclude": ["no-unused-vars"]
+      "tags": [
+        "recommended"
+      ],
+      "include": [
+        "ban-untagged-todo"
+      ],
+      "exclude": [
+        "no-unused-vars"
+      ]
     }
   }
 }
