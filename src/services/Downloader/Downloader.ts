@@ -1,11 +1,11 @@
 import path from 'node:path';
 import fs from 'node:fs';
 import Events from 'node:events';
-import timespan from '@addasoft/timespan';
 import chalk from 'chalk';
 import type { IDownloaderConfig, ILinkQueue, IMetadata, IWriteDiskArgs } from './Downloader.d.ts';
 import { ProgressBar } from '../../helpers/ProgressBar/index.ts';
 import { formatBytes } from '../../utils/formatBytes/index.ts';
+import { convertMsToTime } from '../../utils/convertMsToTime/index.ts';
 import { checkAndCreateFolder } from '../../utils/checkAndCreateFolder/index.ts';
 import { FileLink, ILinkDetails } from '../FileLink/index.ts';
 import { FolderLink } from '../FolderLink/index.ts';
@@ -188,10 +188,10 @@ export class Downloader extends Events {
 		return {
 			update: (downloaded: number) => {
 				const elapsedTime = performance.now() - startTime;
-				const elapsedFormated = timespan(elapsedTime);
+				const elapsedFormated = convertMsToTime(elapsedTime);
 				const speed = downloaded / (elapsedTime / 1000);
 				const eta = (totalSize - downloaded) / (speed || 1);
-				const etaFormated = timespan(eta * 1000) || '--:--';
+				const etaFormated = convertMsToTime(eta * 1000) || '--:--';
 				const downloadedInMiB = (downloaded / 1024 / 1024).toFixed(2);
 				const percentage = (downloaded / totalSize) * 100;
 

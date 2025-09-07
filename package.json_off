@@ -1,6 +1,6 @@
 {
   "name": "mediafiredl",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "A simple command line software to download mediafire files",
   "main": "index.js",
   "type": "module",
@@ -32,7 +32,6 @@
     "vitest": "^2.1.8"
   },
   "dependencies": {
-    "@addasoft/timespan": "^1.1.4",
     "utf8": "^3.0.0",
     "commander": "^12.1.0",
     "i18n": "^0.15.1",
