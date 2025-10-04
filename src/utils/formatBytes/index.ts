@@ -1,1 +1,1 @@
-export { formatBytes } from './formatBytes.ts';
+export { formatBytes } from "./formatBytes.ts";

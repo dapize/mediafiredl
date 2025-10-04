@@ -1,1 +1,1 @@
-export { getOsLanguage } from './getOsLanguage.ts';
+export { getOsLanguage } from "./getOsLanguage.ts";
