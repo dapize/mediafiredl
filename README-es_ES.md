@@ -40,7 +40,7 @@ Solo tienes que ir a la [página de lanzamiento](https://github.com/dapize/media
 
 ```bash
 ## Ejemplo de una instalación en linux
-wget -c https://github.com/dapize/mediafiredl/releases/download/v0.1.0/mediafiredl_linux -O mediafiredl
+wget -c https://github.com/dapize/mediafiredl/releases/download/v0.3.1/mediafiredl_linux -O mediafiredl
 chmod +x ./mediafiredl
 ```
 

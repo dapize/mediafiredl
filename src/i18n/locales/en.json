@@ -1,34 +1,34 @@
 {
-	"app": {
-		"description": "Download files and folders from MediaFire"
-	},
-	"arguments": {
-		"links": "Links to MediaFire files or folders",
-		"output": "Output directory (default: current directory)",
-		"maxDownloads": "Maximum concurrent downloads",
-		"inputFile": "Path to a text file containing MediaFire links",
-		"details": "Enable detailed output (verbose mode)",
-		"inspect": "Get detailed information about the provided link without downloading the file. This includes file name, size and other available metadata.",
-		"beautify": "Return with a beautify format the data to show for the 'inspect' option."
-	},
-	"metadata": {
-		"link": "Link",
-		"directLink": "Direct Link",
-		"fileName": "File Name",
-		"size": "Size"
-	},
-	"errors": {
-		"notFoundInputFile": "Input file not found: {{filePath}}",
-		"inputFileAndArgLink": "Cannot use both input file and direct links simultaneously.",
-		"noLinks": "No links provided.",
-		"invalidLinks": "Invalid Links",
-		"unknown": "An unknown error occurred.",
-		"extractDetails": "Could not extract download link or file name from {{rawLink}}",
-		"fetchPureLink": "Failed to fetch headers from pure link: {{statusText}}",
-		"invalidformat": "Invalid format",
-		"invalidUnit": "Invalid unit"
-	},
-	"messages": {
-		"downloadCompleted": "¡Download completed!"
-	}
+  "app": {
+    "description": "Download files and folders from MediaFire"
+  },
+  "arguments": {
+    "links": "Links to MediaFire files or folders",
+    "output": "Output directory (default: current directory)",
+    "maxDownloads": "Maximum concurrent downloads",
+    "inputFile": "Path to a text file containing MediaFire links",
+    "details": "Enable detailed output (verbose mode)",
+    "inspect": "Get detailed information about the provided link without downloading the file. This includes file name, size and other available metadata.",
+    "beautify": "Return with a beautify format the data to show for the 'inspect' option."
+  },
+  "metadata": {
+    "link": "Link",
+    "directLink": "Direct Link",
+    "fileName": "File Name",
+    "size": "Size"
+  },
+  "errors": {
+    "notFoundInputFile": "Input file not found: {{filePath}}",
+    "inputFileAndArgLink": "Cannot use both input file and direct links simultaneously.",
+    "noLinks": "No links provided.",
+    "invalidLinks": "Invalid Links",
+    "unknown": "An unknown error occurred.",
+    "extractDetails": "Could not extract download link or file name from {{rawLink}}",
+    "fetchPureLink": "Failed to fetch headers from pure link: {{statusText}}",
+    "invalidformat": "Invalid format",
+    "invalidUnit": "Invalid unit"
+  },
+  "messages": {
+    "downloadCompleted": "¡Download completed!"
+  }
 }

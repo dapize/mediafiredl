@@ -1,52 +1,19 @@
 {
-  "version": "0.3.0",
+  "version": "0.3.1",
   "tasks": {
     "start": "deno run --allow-net --allow-read --allow-write --allow-env --allow-sys --unstable-sloppy-imports ./src/cli/commands.ts",
     "build": "deno compile --allow-net --allow-read --allow-write --allow-env --allow-sys -o ./bin/mediafiredl ./src/cli/commands.ts",
-    "test": "vitest run --reporter verbose",
+    "test": "deno run -A npm:vitest run --reporter verbose",
     "fm:check": "deno fmt --check",
     "fm:fix": "deno fmt src/",
     "lint:check": "deno lint",
     "lint:fix": "deno lint --fix"
   },
   "imports": {
-    "@types/cli-progress": "npm:@types/cli-progress@^3.11.6",
-    "@types/i18n": "npm:@types/i18n@^0.13.12",
-    "@types/node": "npm:@types/node@^24.3.1",
-    "@types/progress": "npm:@types/progress@^2.0.7",
-    "@types/utf8": "npm:@types/utf8@^3.0.3",
-    "@vitest/coverage-v8": "npm:@vitest/coverage-v8@^2.1.8",
     "chalk": "npm:chalk@^5.3.0",
     "cli-progress": "npm:cli-progress@^3.12.0",
     "commander": "npm:commander@^12.1.0",
-    "i18n": "npm:i18n@^0.15.1",
-    "utf8": "npm:utf8@^3.0.0",
-    "vitest": "npm:vitest@^2.1.8"
+    "i18n": "npm:i18n@^0.15.1"
   },
-  "nodeModulesDir": "auto",
-  "fmt": {
-    "useTabs": true,
-    "lineWidth": 140,
-    "indentWidth": 2,
-    "singleQuote": true,
-    "include": [
-      "src/"
-    ]
-  },
-  "lint": {
-    "include": [
-      "src/"
-    ],
-    "rules": {
-      "tags": [
-        "recommended"
-      ],
-      "include": [
-        "ban-untagged-todo"
-      ],
-      "exclude": [
-        "no-unused-vars"
-      ]
-    }
-  }
+  "nodeModulesDir": "auto"
 }

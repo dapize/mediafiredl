@@ -1,1 +1,1 @@
-export { convertMsToTime } from './convertMsToTime.ts';
+export { convertMsToTime } from "./convertMsToTime.ts";
