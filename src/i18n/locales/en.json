@@ -9,7 +9,9 @@
     "inputFile": "Path to a text file containing MediaFire links",
     "details": "Enable detailed output (verbose mode)",
     "inspect": "Get detailed information about the provided link without downloading the file. This includes file name, size and other available metadata.",
-    "beautify": "Return with a beautify format the data to show for the 'inspect' option."
+    "beautify": "Return with a beautify format the data to show for the 'inspect' option.",
+    "headersFile": "Path to custom HTTP headers file (raw or JSON format)",
+    "exportHeaders": "Export default headers to file (default: ./headers.txt)"
   },
   "metadata": {
     "link": "Link",
@@ -27,7 +29,16 @@
     "fetchPureLink": "Failed to fetch headers from pure link: {{statusText}}",
     "invalidformat": "Invalid format",
     "invalidUnit": "Invalid unit",
-    "failedDownload": "Failed to download"
+    "failedDownload": "Failed to download",
+    "notFoundHeadersFile": "Headers file not found",
+    "jsonParsedInvalid": "JSON must be an object with key-value pairs",
+    "jsonFormatInvalid": "Invalid JSON format"
+  },
+  "warnings": {
+    "headerLineInvalid": "Invalid header line (missing ':')",
+    "acceptEncodingMissing": "Warning: \"Accept-Encoding\" not specified. Binary files may be corrupted. Recommended: \"identity\"",
+    "acceptEncodingInvalid": "Warning: \"Accept-Encoding: {{valueHeader}}\" may cause file corruption. Recommended: \"identity\"",
+    "userAgentMissing": "Warning: \"User-Agent\" not specified. Some servers may block the request."
   },
   "messages": {
     "downloadCompleted": "¡Download completed!"

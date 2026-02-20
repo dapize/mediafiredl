@@ -9,7 +9,9 @@
     "inputFile": "Ruta a un archivo de texto que contiene enlaces de MediaFire",
     "details": "Habilitar salida detallada (modo detallado)",
     "inspect": "Obtiene información detallada sobre el enlace proporcionado sin descargar el archivo. Esto incluye el nombre del archivo, tamaño, tipo y otros metadatos disponibles.",
-    "beautify": "Devuelve con un formato embellecedor los datos a mostrar para la opción 'inspect'."
+    "beautify": "Devuelve con un formato embellecedor los datos a mostrar para la opción 'inspect'.",
+    "headersFile": "Ruta al archivo de encabezados HTTP personalizados (formato raw o JSON)",
+    "exportHeaders": "Exportar encabezados predeterminados a un archivo (predeterminado: ./headers.txt)"
   },
   "metadata": {
     "link": "Enlace",
@@ -27,7 +29,16 @@
     "fetchPureLink": "No se pudieron obtener los encabezados del enlace puro: {{statusText}}",
     "invalidformat": "Formato inválido",
     "invalidUnit": "Unidad no válida",
-    "failedDownload": "No se pudo descargar"
+    "failedDownload": "No se pudo descargar",
+    "notFoundHeadersFile": "Archivo de encabezados no encontrado",
+    "jsonParsedInvalid": "El archivo JSON debe ser un objeto con pares clave-valor",
+    "jsonFormatInvalid": "Formato JSON no válido"
+  },
+  "warnings": {
+    "headerLineInvalid": "Línea de encabezado no válida (falta ':')",
+    "acceptEncodingMissing": "Advertencia: \"Accept-Encoding\" no especificado. Los archivos binarios podrían dañarse, se recomienda: \"identity\"",
+    "acceptEncodingInvalid": "Advertencia: \"Accept-Encoding: {{valueHeader}}\" puede causar corrupción de archivos. Se recomienda: \"identity\"",
+    "userAgentMissing": "Advertencia: \"User-Agent\" no especificado. Algunos servidores pueden bloquear la solicitud."
   },
   "messages": {
     "downloadCompleted": "¡Descarga completa!"

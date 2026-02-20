@@ -6,17 +6,25 @@ import chalk from "chalk";
 import { Downloader } from "../services/Downloader/index.ts";
 import { checkAndCreateFolder } from "../utils/checkAndCreateFolder/index.ts";
 import { i18n } from "../i18n/i18n.ts";
+import { HeadersFileParser } from "../helpers/HeadersFileParser/index.ts";
+import { readLinksFromFile } from "../helpers/readLinksFromFile.ts";
 
-const readLinksFromFile = (filePath: string): string[] => {
-  if (!fs.existsSync(filePath)) {
-    throw new Error(i18n.__("errors.notFoundInputFile", { filePath }));
-  }
 
-  const content = fs.readFileSync(filePath, "utf-8");
-  return content
-    .split("\n")
-    .map((line: string) => line.trim())
-    .filter((line: string) => line !== "");
+const handleExportDefaultHeaders = (outputPath?: string) => {
+  const defaultPath = outputPath || "./headers.txt";
+  const resolvedPath = path.resolve(defaultPath);
+  const content = HeadersFileParser.exportDefaultHeaders();
+
+  fs.writeFileSync(resolvedPath, content, "utf-8");
+
+  console.log(chalk.green(`Default headers exported to: ${resolvedPath}`));
+  console.log(
+    chalk.cyan(
+      "\nYou can now edit this file and use it with: -H " +
+        path.basename(resolvedPath),
+    ),
+  );
+  process.exit(0);
 };
 
 export const action = (
@@ -28,12 +36,30 @@ export const action = (
     inspect?: boolean;
     beautify?: boolean;
     details: boolean;
+    headersFile?: string;
+    exportDefaultHeaders?: boolean | string;
   },
   command: Command,
 ) => {
-  const { maxDownloads, inputFile, details, inspect, beautify } = options;
+  const {
+    maxDownloads,
+    inputFile,
+    details,
+    inspect,
+    beautify,
+    headersFile,
+    exportDefaultHeaders,
+  } = options;
 
   try {
+    if (exportDefaultHeaders !== undefined) {
+      const outputPath = typeof exportDefaultHeaders === "string"
+        ? exportDefaultHeaders
+        : undefined;
+      handleExportDefaultHeaders(outputPath);
+      return;
+    }
+
     const output = path.resolve(options.output);
     checkAndCreateFolder(output);
 
@@ -53,6 +79,10 @@ export const action = (
       inspect,
       beautify,
     });
+
+    if (headersFile) {
+      downloader.setCustomHeaders(headersFile);
+    }
 
     downloader.addLinks(links, output);
     downloader.startProcessing();

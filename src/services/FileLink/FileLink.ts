@@ -2,9 +2,10 @@ import path from "node:path";
 import type { ILinkDetails } from "./FileLink.d.ts";
 import { i18n } from "../../i18n/i18n.ts";
 import { convertToBytes } from "../../utils/convertToBytes/index.ts";
-import { fakeHeaders } from "./../../utils/fakeHeaders.ts";
+import { scrapingHeaders } from "../../utils/headers/headers.ts";
 import { sanitizeFileName } from "../../helpers/sanitizeFileName.ts";
 import { smartDecode } from "../../utils/smartDecode/index.ts";
+import { IHeaders } from "../../utils/headers/index.ts";
 
 export class FileLink {
   private rawLink: string;
@@ -48,7 +49,7 @@ export class FileLink {
   }
 
   private async extractDetailsFromNoPremiumLink(
-    headers?: Headers,
+    headers?: IHeaders,
   ): Promise<ILinkDetails> {
     const rawLink = this.rawLink;
     const response = await fetch(rawLink, {
@@ -77,7 +78,7 @@ export class FileLink {
 
     // fallback logic for new download page UI
     if (pureLink === "#") {
-      return await this.extractDetailsFromNoPremiumLink(fakeHeaders);
+      return await this.extractDetailsFromNoPremiumLink(scrapingHeaders);
     }
 
     const data = {

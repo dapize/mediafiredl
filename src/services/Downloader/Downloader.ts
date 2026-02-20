@@ -2,6 +2,7 @@ import path from "node:path";
 import fs from "node:fs";
 import Events from "node:events";
 import chalk from "chalk";
+import { i18n } from "../../i18n/i18n.ts";
 import type {
   IDownloaderConfig,
   ILinkQueue,
@@ -14,7 +15,8 @@ import { convertMsToTime } from "../../utils/convertMsToTime/index.ts";
 import { checkAndCreateFolder } from "../../utils/checkAndCreateFolder/index.ts";
 import { FileLink, ILinkDetails } from "../FileLink/index.ts";
 import { FolderLink } from "../FolderLink/index.ts";
-import { i18n } from "../../i18n/i18n.ts";
+import { HeadersFileParser } from "../../helpers/HeadersFileParser/index.ts";
+import { downloadHeaders } from '../../utils/headers/index.ts'
 
 export class Downloader extends Events {
   private concurrencyLimit: number;
@@ -25,6 +27,7 @@ export class Downloader extends Events {
   private downloadedFiles: number;
   private inspect: boolean;
   private beautify: boolean;
+  private customHeaders: Record<string, string> | null;
 
   constructor(config: IDownloaderConfig) {
     super();
@@ -36,6 +39,38 @@ export class Downloader extends Events {
     this.linksProcessing = new Set();
     this.invalidLinks = new Set();
     this.downloadedFiles = 0;
+    this.customHeaders = null;
+  }
+
+  public setCustomHeaders(headersFilePath: string): void {
+    try {
+      const parsedHeaders = HeadersFileParser.parseFile(headersFilePath);
+      const warnings = HeadersFileParser.validateCriticalHeaders(parsedHeaders);
+
+      // Mostrar warnings si los hay
+      if (warnings.length > 0) {
+        console.log(chalk.yellow("\n⚠️  Headers Configuration Warnings:"));
+        warnings.forEach((warning) => console.log(chalk.yellow(`   ${warning}`)));
+        console.log();
+      }
+
+      // Merge con headers por defecto
+      this.customHeaders = HeadersFileParser.mergeWithDefaults(parsedHeaders);
+
+      console.log(
+        chalk.green(
+          `✓ Custom headers loaded from: ${headersFilePath}\n`,
+        ),
+      );
+    } catch (error) {
+      throw new Error(
+        `Failed to load custom headers: ${error instanceof Error ? error.message : error}`,
+      );
+    }
+  }
+
+  private getDownloadHeaders(): Record<string, string> {
+    return this.customHeaders || downloadHeaders;
   }
 
   public addLinks(links: string[], output: string) {
@@ -129,16 +164,7 @@ export class Downloader extends Events {
     output: string,
   ): Promise<void> {
     const response = await fetch(url, {
-      headers: {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36",
-        "Accept": "*/*",
-        "Accept-Encoding": "identity",
-        "Connection": "keep-alive",
-        "DNT": "1",
-        "Sec-Fetch-Dest": "empty",
-        "Sec-Fetch-Mode": "cors",
-        "Sec-Fetch-Site": "cross-site"
-      },
+      headers: this.getDownloadHeaders(),
     });
     if (!response.ok) {
       throw new Error(

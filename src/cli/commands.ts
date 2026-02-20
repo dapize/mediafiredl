@@ -20,6 +20,8 @@ program
   .option("-d, --details", i18n.__("arguments.details"), false)
   .option("--inspect", i18n.__("arguments.inspect"), false)
   .option("--beautify", i18n.__("arguments.beautify"), false)
+  .option("-H, --headers-file <path>", i18n.__("arguments.headersFile"))
+  .option("--export-default-headers [path]", i18n.__("arguments.exportHeaders"))
   .action(action);
 
 program.parse();
