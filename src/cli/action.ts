@@ -56,8 +56,8 @@ export const action = (
 
     downloader.addLinks(links, output);
     downloader.startProcessing();
-    downloader.on("completed", (invalidLinks: Set<string>) => {
-      if (!inspect) {
+    downloader.on("completed", ({downloadedFiles, invalidLinks}: { downloadedFiles: number, invalidLinks: Set<string>}) => {
+      if (!inspect && downloadedFiles) {
         const completedTitle = chalk.white.bgGreen(
           i18n.__("messages.downloadCompleted"),
         );
@@ -67,7 +67,7 @@ export const action = (
         const invalidTitle = chalk.white.bgYellow(
           i18n.__("errors.invalidLinks"),
         );
-        console.log(`\n${invalidTitle}:\n${[...invalidLinks]}`);
+        console.log(`\n${invalidTitle}:\n${[...invalidLinks].join('\n')}`);
       }
       process.exit(1);
     });

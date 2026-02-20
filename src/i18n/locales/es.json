@@ -26,7 +26,8 @@
     "extractDetails": "No se pudo extraer el enlace de descarga o el nombre del archivo desde {{rawLink}}",
     "fetchPureLink": "No se pudieron obtener los encabezados del enlace puro: {{statusText}}",
     "invalidformat": "Formato inválido",
-    "invalidUnit": "Unidad no válida"
+    "invalidUnit": "Unidad no válida",
+    "failedDownload": "No se pudo descargar"
   },
   "messages": {
     "downloadCompleted": "¡Descarga completa!"

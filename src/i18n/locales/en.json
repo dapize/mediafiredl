@@ -26,7 +26,8 @@
     "extractDetails": "Could not extract download link or file name from {{rawLink}}",
     "fetchPureLink": "Failed to fetch headers from pure link: {{statusText}}",
     "invalidformat": "Invalid format",
-    "invalidUnit": "Invalid unit"
+    "invalidUnit": "Invalid unit",
+    "failedDownload": "Failed to download"
   },
   "messages": {
     "downloadCompleted": "¡Download completed!"

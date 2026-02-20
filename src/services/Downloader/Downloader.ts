@@ -22,6 +22,7 @@ export class Downloader extends Events {
   private linkQueue: Set<ILinkQueue>;
   private linksProcessing: Set<Promise<void>>;
   private invalidLinks: Set<string>;
+  private downloadedFiles: number;
   private inspect: boolean;
   private beautify: boolean;
 
@@ -34,6 +35,7 @@ export class Downloader extends Events {
     this.linkQueue = new Set();
     this.linksProcessing = new Set();
     this.invalidLinks = new Set();
+    this.downloadedFiles = 0;
   }
 
   public addLinks(links: string[], output: string) {
@@ -126,7 +128,24 @@ export class Downloader extends Events {
     { url, fileName, size }: ILinkDetails,
     output: string,
   ): Promise<void> {
-    const response = await fetch(url);
+    const response = await fetch(url, {
+      headers: {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36",
+        "Accept": "*/*",
+        "Accept-Encoding": "identity",
+        "Connection": "keep-alive",
+        "DNT": "1",
+        "Sec-Fetch-Dest": "empty",
+        "Sec-Fetch-Mode": "cors",
+        "Sec-Fetch-Site": "cross-site"
+      },
+    });
+    if (!response.ok) {
+      throw new Error(
+        `${i18n.__("errors.failedDownload")} ${fileName}: ${response.status} ${response.statusText}`,
+      );
+    }
+
     const reader = response.body!.getReader();
     const absolutePath = path.resolve(output);
     checkAndCreateFolder(absolutePath);
@@ -138,6 +157,9 @@ export class Downloader extends Events {
       filePath,
       progressBar,
     });
+
+    this.downloadedFiles += 1;
+
     progressBar.instance.stop();
   }
 
@@ -153,13 +175,17 @@ export class Downloader extends Events {
   }
 
   private checkToCompleted() {
+    const returnData = {
+      downloadedFiles: this.downloadedFiles,
+      invalidLinks: this.invalidLinks
+    };
     if (!this.linksProcessing.size) {
-      this.emit("completed", this.invalidLinks);
+      this.emit("completed", returnData);
       return;
     }
     Promise.all(this.linksProcessing).finally(() => {
       setTimeout(() => {
-        this.emit("completed", this.invalidLinks);
+        this.emit("completed", returnData);
       }, 1000);
     });
   }
@@ -171,19 +197,23 @@ export class Downloader extends Events {
   }: IWriteDiskArgs): Promise<void> {
     const fileStream = fs.createWriteStream(filePath);
     let downloaded = 0;
-    while (true) {
-      const { done, value } = await reader.read();
-      if (done) break;
-      if (value) {
-        downloaded += value.length;
-        progressBar.update(downloaded);
-        if (fileStream) {
+
+    try {
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        if (value) {
+          downloaded += value.length;
+          progressBar.update(downloaded);
           fileStream.write(value);
         }
       }
-    }
-    if (fileStream) {
       progressBar.completed();
+    } catch (error) {
+      fileStream.close();
+      fs.unlinkSync(filePath);
+      throw error;
+    } finally {
       fileStream.end();
     }
   }
