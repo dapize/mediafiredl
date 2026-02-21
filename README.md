@@ -7,7 +7,7 @@
     </p>
 </div>
 
-A simple but very useful terminal software to download files from mediafire.com (files and folders).
+A simple but very useful terminal software to download files and folders from mediafire.com.
 
 ## 📸 Preview
 
@@ -18,19 +18,21 @@ A simple but very useful terminal software to download files from mediafire.com 
 ```bash
 Usage: mediafiredl [options] [links...]
 
-Download files and folders from MediaFire
+Download files and folders from Mediafire
 
 Argumentos:
-  links                         Links Links to MediaFire files or folders
+  links                         Links Links to Mediafire files or folders
 
 Optiones:
   -V, --version                 Display version number
   -o, --output <path>           Output directory (default: current directory) (default: "./")
   -m, --max-downloads <number>  Maximum simultaneous downloads (default: "2")
-  -i, --input-file <path>       Path to a text file containing MediaFire links
+  -i, --input-file <path>       Path to a text file containing Mediafire links
   -d, --details                 Enable verbose output (verbose mode) (default: false)
   --inspect                     Get detailed information about the given link without downloading the file. (default: false)
   --beautify                    Returns beautified data to display for the 'inspect' option. (default: false)
+  -H, --headers-file <path>     Path to custom HTTP headers file (raw or JSON format)
+  --export-default-headers [path]  Export default headers to file (default: ./headers.txt)
   -h, --help                    Show help
 ```
 
@@ -40,7 +42,7 @@ Just you have to go to the [Release Page](https://github.com/dapize/mediafiredl/
 
 ```bash
 ## Example for Linux installation
-wget -c https://github.com/dapize/mediafiredl/releases/download/v0.3.1/mediafiredl_linux -O mediafiredl
+wget -c https://github.com/dapize/mediafiredl/releases/download/v0.4.0/mediafiredl_linux -O mediafiredl
 chmod +x ./mediafiredl
 ```
 

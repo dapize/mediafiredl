@@ -1,0 +1,138 @@
+import fs from "node:fs";
+import path from "node:path";
+import chalk from "chalk";
+import process from "node:process";
+import { IHeaders, downloadHeaders } from "../../utils/headers/index.ts";
+import { i18n } from "../../i18n/i18n.ts";
+
+export class HeadersHandler {
+  static exportDefaultHeaders(outputPath?: string) {
+    const defaultPath = outputPath || "./headers.txt";
+    const resolvedPath = path.resolve(defaultPath);
+
+    const content = Object.entries(downloadHeaders).map(([key, value]) => `${key}: ${value}`).join("\n");
+    fs.writeFileSync(resolvedPath, content, "utf-8");
+
+    console.log(chalk.green(`${i18n.__("messages.headersExportedTo")}: ${resolvedPath}`));
+    console.log(
+      chalk.cyan(
+        `\n${i18n.__("messages.exportedHeaders")}: -H ` +
+          path.basename(resolvedPath),
+      ),
+    );
+    process.exit(0);
+  }
+  
+  static buildCustomHeaders(headersFilePath: string): IHeaders {
+    try {
+      const parsedHeaders = this.parseFile(headersFilePath);
+      const warnings = this.validateCriticalHeaders(parsedHeaders);
+
+      if (warnings.length) {
+        console.log(chalk.yellow("\n⚠️  Headers Configuration Warnings:"));
+        warnings.forEach((warning) => console.log(chalk.yellow(`   ${warning}`)));
+        // TODO: Add question in the CLI for continue or not.
+      }
+
+      // Merge con headers por defecto
+      return this.mergeWithDefaults(parsedHeaders);
+    } catch (error) {
+      throw new Error(
+        `${i18n.__("errors.failedLoadHeaders")}: ${error instanceof Error ? error.message : error}`,
+      );
+    }
+  }
+
+  private static parseFile(filePath: string): IHeaders {
+    if (!fs.existsSync(filePath)) {
+      throw new Error(`${i18n.__("errors.notFoundHeadersFile")}: ${filePath}`);
+    }
+
+    const content = fs.readFileSync(filePath, "utf-8").trim();
+    const ext = path.extname(filePath).toLowerCase();
+
+    if (ext === ".json" || content.startsWith("{")) {
+      return this.parseJSON(content);
+    }
+
+    return this.parseHTTPRaw(content);
+  }
+
+  private static validateCriticalHeaders(headers: IHeaders): string[] {
+    const warnings: string[] = [];
+
+    if (!headers["Accept-Encoding"]) {
+      warnings.push(i18n.__("warnings.acceptEncodingMissing"));
+    } else if (
+      headers["Accept-Encoding"] !== "identity" &&
+      !headers["Accept-Encoding"].includes("identity")
+    ) {
+      warnings.push(i18n.__("warnings.acceptEncodingInvalid", { valueHeader: headers["Accept-Encoding"] }));
+    }
+
+    if (!headers["User-Agent"]) {
+      warnings.push(i18n.__("warnings.userAgentMissing"));
+    }
+
+    return warnings;
+  }
+
+  private static mergeWithDefaults(customHeaders: IHeaders): IHeaders {
+    return {
+      ...downloadHeaders,
+      ...customHeaders,
+    };
+  }
+
+  private static parseJSON(content: string): IHeaders {
+    try {
+      const parsed = JSON.parse(content);
+
+      if (typeof parsed !== "object" || Array.isArray(parsed)) {
+        throw new Error(i18n.__("errors.jsonParsedInvalid"));
+      }
+
+      // Convertir todos los valores a string
+      const headers: IHeaders = {};
+      for (const [key, value] of Object.entries(parsed)) {
+        headers[key] = String(value);
+      }
+
+      return headers;
+    } catch (error) {
+      throw new Error(
+        `${i18n.__("errors.jsonFormatInvalid")}: ${error instanceof Error ? error.message : error}`,
+      );
+    }
+  }
+
+  private static parseHTTPRaw(content: string): IHeaders {
+    const headers: IHeaders = {};
+    const lines = content.split("\n");
+
+    for (const line of lines) {
+      const trimmedLine = line.trim();
+
+      // Ignorar líneas vacías y comentarios
+      if (!trimmedLine || trimmedLine.startsWith("#")) {
+        continue;
+      }
+
+      // Buscar el primer ':' para separar key:value
+      const colonIndex = trimmedLine.indexOf(":");
+      if (colonIndex === -1) {
+        console.warn(`${i18n.__("warnings.headerLineInvalid")}: ${trimmedLine}`);
+        continue;
+      }
+
+      const key = trimmedLine.slice(0, colonIndex).trim();
+      const value = trimmedLine.slice(colonIndex + 1).trim();
+
+      if (key && value) {
+        headers[key] = value;
+      }
+    }
+
+    return headers;
+  }
+}

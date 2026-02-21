@@ -1,10 +1,10 @@
 import { describe, it, expect, beforeEach, afterEach } from "vitest";
 import fs from "node:fs";
 import path from "node:path";
-import { HeadersFileParser } from "./HeadersFileParser.ts";
+import { HeadersHandler } from "./HeadersHandler.ts";
 import EsTranslation from "../../i18n/locales/es.json" with { type: "json" };
 
-describe("HeadersFileParser", () => {
+describe("HeadersHandler", () => {
   const testDir = "./test-headers";
   const testFiles: string[] = [];
 
@@ -41,7 +41,7 @@ describe("HeadersFileParser", () => {
   describe("parseFile", () => {
     it("should throw error if file does not exist", () => {
       expect(() => {
-        HeadersFileParser.parseFile("nonexistent.txt");
+        HeadersHandler.parseFile("nonexistent.txt");
       }).toThrow(EsTranslation.errors.notFoundHeadersFile);
     });
 
@@ -52,7 +52,7 @@ Accept: */*
 Accept-Encoding: identity
 `;
       const filePath = createTestFile("headers.txt", content);
-      const parsed = HeadersFileParser.parseFile(filePath);
+      const parsed = HeadersHandler.parseFile(filePath);
 
       expect(parsed).toEqual({
         "User-Agent": "Mozilla/5.0",
@@ -68,7 +68,7 @@ Accept-Encoding: identity
         "Accept-Encoding": "identity",
       });
       const filePath = createTestFile("headers.json", content);
-      const parsed = HeadersFileParser.parseFile(filePath);
+      const parsed = HeadersHandler.parseFile(filePath);
 
       expect(parsed).toEqual({
         "User-Agent": "Mozilla/5.0",
@@ -80,7 +80,7 @@ Accept-Encoding: identity
     it("should detect JSON by content even without .json extension", () => {
       const content = '{ "User-Agent": "Test" }';
       const filePath = createTestFile("headers.txt", content);
-      const parsed = HeadersFileParser.parseFile(filePath);
+      const parsed = HeadersHandler.parseFile(filePath);
 
       expect(parsed).toEqual({
         "User-Agent": "Test",
@@ -98,7 +98,7 @@ Accept: */*
 Accept-Encoding: identity
 `;
       const filePath = createTestFile("headers.txt", content);
-      const parsed = HeadersFileParser.parseFile(filePath);
+      const parsed = HeadersHandler.parseFile(filePath);
 
       expect(Object.keys(parsed).length).toBe(3);
     });
@@ -111,7 +111,7 @@ User-Agent: Mozilla/5.0
 Accept: */*
 `;
       const filePath = createTestFile("headers.txt", content);
-      const parsed = HeadersFileParser.parseFile(filePath);
+      const parsed = HeadersHandler.parseFile(filePath);
 
       expect(parsed).toEqual({
         "User-Agent": "Mozilla/5.0",
@@ -125,7 +125,7 @@ Authorization: Bearer token:with:colons
 Accept: */*
 `;
       const filePath = createTestFile("headers.txt", content);
-      const parsed = HeadersFileParser.parseFile(filePath);
+      const parsed = HeadersHandler.parseFile(filePath);
 
       expect(parsed["Authorization"]).toBe("Bearer token:with:colons");
     });
@@ -135,7 +135,7 @@ Accept: */*
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64)
 `;
       const filePath = createTestFile("headers.txt", content);
-      const parsed = HeadersFileParser.parseFile(filePath);
+      const parsed = HeadersHandler.parseFile(filePath);
 
       expect(parsed["User-Agent"]).toBe(
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
@@ -153,7 +153,7 @@ Accept: */*
       console.warn = (msg: string) => warnings.push(msg);
 
       const filePath = createTestFile("headers.txt", content);
-      HeadersFileParser.parseFile(filePath);
+      HeadersHandler.parseFile(filePath);
 
       console.warn = consoleWarn;
 
@@ -167,7 +167,7 @@ Accept: */*
 Accept:*/*
 `;
       const filePath = createTestFile("headers.txt", content);
-      const parsed = HeadersFileParser.parseFile(filePath);
+      const parsed = HeadersHandler.parseFile(filePath);
 
       expect(parsed).toEqual({
         "User-Agent": "Mozilla/5.0",
@@ -183,7 +183,7 @@ Accept:*/*
         "Accept": "*/*",
       });
       const filePath = createTestFile("headers.json", content);
-      const parsed = HeadersFileParser.parseFile(filePath);
+      const parsed = HeadersHandler.parseFile(filePath);
 
       expect(parsed).toEqual({
         "User-Agent": "Test",
@@ -198,7 +198,7 @@ Accept:*/*
         "User-Agent": "Test",
       });
       const filePath = createTestFile("headers.json", content);
-      const parsed = HeadersFileParser.parseFile(filePath);
+      const parsed = HeadersHandler.parseFile(filePath);
 
       expect(parsed["X-Number"]).toBe("123");
       expect(parsed["X-Boolean"]).toBe("true");
@@ -212,7 +212,7 @@ Accept:*/*
         "_note": "This is a note",
       });
       const filePath = createTestFile("headers.json", content);
-      const parsed = HeadersFileParser.parseFile(filePath);
+      const parsed = HeadersHandler.parseFile(filePath);
 
       // Los keys con _ se incluyen pero no afectan headers HTTP
       expect(parsed["User-Agent"]).toBe("Test");
@@ -223,7 +223,7 @@ Accept:*/*
       const filePath = createTestFile("headers.json", content);
 
       expect(() => {
-        HeadersFileParser.parseFile(filePath);
+        HeadersHandler.parseFile(filePath);
       }).toThrow(EsTranslation.errors.jsonFormatInvalid);
     });
 
@@ -232,7 +232,7 @@ Accept:*/*
       const filePath = createTestFile("headers.json", content);
 
       expect(() => {
-        HeadersFileParser.parseFile(filePath);
+        HeadersHandler.parseFile(filePath);
       }).toThrow(EsTranslation.errors.jsonParsedInvalid);
     });
   });
@@ -243,7 +243,7 @@ Accept:*/*
         "User-Agent": "Mozilla/5.0",
         "Accept-Encoding": "identity",
       };
-      const warnings = HeadersFileParser.validateCriticalHeaders(headers);
+      const warnings = HeadersHandler.validateCriticalHeaders(headers);
 
       expect(warnings.length).toBe(0);
     });
@@ -252,7 +252,7 @@ Accept:*/*
       const headers = {
         "User-Agent": "Mozilla/5.0",
       };
-      const warnings = HeadersFileParser.validateCriticalHeaders(headers);
+      const warnings = HeadersHandler.validateCriticalHeaders(headers);
 
       expect(warnings.length).toBeGreaterThan(0);
       expect(warnings[0]).toContain("Accept-Encoding");
@@ -264,7 +264,7 @@ Accept:*/*
         "User-Agent": "Mozilla/5.0",
         "Accept-Encoding": "gzip, deflate",
       };
-      const warnings = HeadersFileParser.validateCriticalHeaders(headers);
+      const warnings = HeadersHandler.validateCriticalHeaders(headers);
 
       expect(warnings.length).toBeGreaterThan(0);
       expect(warnings[0]).toContain("Accept-Encoding");
@@ -276,7 +276,7 @@ Accept:*/*
         "User-Agent": "Mozilla/5.0",
         "Accept-Encoding": "gzip, deflate, identity",
       };
-      const warnings = HeadersFileParser.validateCriticalHeaders(headers);
+      const warnings = HeadersHandler.validateCriticalHeaders(headers);
 
       const acceptEncodingWarnings = warnings.filter((w) =>
         w.includes("Accept-Encoding")
@@ -288,7 +288,7 @@ Accept:*/*
       const headers = {
         "Accept-Encoding": "identity",
       };
-      const warnings = HeadersFileParser.validateCriticalHeaders(headers);
+      const warnings = HeadersHandler.validateCriticalHeaders(headers);
 
       expect(warnings.some((w) => w.includes("User-Agent"))).toBe(true);
     });
@@ -299,7 +299,7 @@ Accept:*/*
       const customHeaders = {
         "User-Agent": "CustomAgent/1.0",
       };
-      const merged = HeadersFileParser.mergeWithDefaults(customHeaders);
+      const merged = HeadersHandler.mergeWithDefaults(customHeaders);
 
       expect(merged["User-Agent"]).toBe("CustomAgent/1.0");
       expect(merged["Accept-Encoding"]).toBe("identity"); // From defaults
@@ -311,14 +311,14 @@ Accept:*/*
         "Accept": "application/json",
         "Connection": "close",
       };
-      const merged = HeadersFileParser.mergeWithDefaults(customHeaders);
+      const merged = HeadersHandler.mergeWithDefaults(customHeaders);
 
       expect(merged["Accept"]).toBe("application/json");
       expect(merged["Connection"]).toBe("close");
     });
 
     it("should preserve all default headers when no custom headers", () => {
-      const merged = HeadersFileParser.mergeWithDefaults({});
+      const merged = HeadersHandler.mergeWithDefaults({});
 
       expect(merged["User-Agent"]).toBeDefined();
       expect(merged["Accept-Encoding"]).toBe("identity");
@@ -328,7 +328,7 @@ Accept:*/*
 
   describe("exportDefaultHeaders", () => {
     it("should export headers in HTTP raw format", () => {
-      const exported = HeadersFileParser.exportDefaultHeaders();
+      const exported = HeadersHandler.exportDefaultHeaders();
 
       expect(exported).toContain("User-Agent:");
       expect(exported).toContain("Accept:");
@@ -337,7 +337,7 @@ Accept:*/*
     });
 
     it("should include documentation in export", () => {
-      const exported = HeadersFileParser.exportDefaultHeaders();
+      const exported = HeadersHandler.exportDefaultHeaders();
 
       expect(exported).toContain("Default Headers");
       expect(exported).toContain("--headers-file");
@@ -345,9 +345,9 @@ Accept:*/*
     });
 
     it("should be parseable by parseFile", () => {
-      const exported = HeadersFileParser.exportDefaultHeaders();
+      const exported = HeadersHandler.exportDefaultHeaders();
       const filePath = createTestFile("exported.txt", exported);
-      const parsed = HeadersFileParser.parseFile(filePath);
+      const parsed = HeadersHandler.parseFile(filePath);
 
       // Should parse without errors and contain key headers
       expect(parsed["Accept-Encoding"]).toBe("identity");

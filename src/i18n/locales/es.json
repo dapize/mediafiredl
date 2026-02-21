@@ -1,12 +1,12 @@
 {
   "app": {
-    "description": "Descarga archivos y carpetas de MediaFire"
+    "description": "Descarga archivos y carpetas de Mediafire.com"
   },
   "arguments": {
-    "links": "Enlaces de archivos o carpetas de MediaFire",
+    "links": "Enlaces de archivos o carpetas de Mediafire",
     "output": "Directorio de salida (predeterminado: directorio actual)",
     "maxDownloads": "Descargas simultáneas máximas",
-    "inputFile": "Ruta a un archivo de texto que contiene enlaces de MediaFire",
+    "inputFile": "Ruta a un archivo de texto que contiene enlaces de Mediafire",
     "details": "Habilitar salida detallada (modo detallado)",
     "inspect": "Obtiene información detallada sobre el enlace proporcionado sin descargar el archivo. Esto incluye el nombre del archivo, tamaño, tipo y otros metadatos disponibles.",
     "beautify": "Devuelve con un formato embellecedor los datos a mostrar para la opción 'inspect'.",
@@ -32,7 +32,8 @@
     "failedDownload": "No se pudo descargar",
     "notFoundHeadersFile": "Archivo de encabezados no encontrado",
     "jsonParsedInvalid": "El archivo JSON debe ser un objeto con pares clave-valor",
-    "jsonFormatInvalid": "Formato JSON no válido"
+    "jsonFormatInvalid": "Formato JSON no válido",
+    "failedLoadHeaders": "No se pudieron cargar los encabezados personalizados"
   },
   "warnings": {
     "headerLineInvalid": "Línea de encabezado no válida (falta ':')",
@@ -41,6 +42,8 @@
     "userAgentMissing": "Advertencia: \"User-Agent\" no especificado. Algunos servidores pueden bloquear la solicitud."
   },
   "messages": {
-    "downloadCompleted": "¡Descarga completa!"
+    "downloadCompleted": "¡Descarga completa!",
+    "headersExportedTo": "Encabezados predeterminados exportados en",
+    "exportedHeaders": "Ahora puedes editar este archivo y usarlo con"
   }
 }

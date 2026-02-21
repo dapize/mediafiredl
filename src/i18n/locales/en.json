@@ -1,12 +1,12 @@
 {
   "app": {
-    "description": "Download files and folders from MediaFire"
+    "description": "Download files and folders from Mediafire.com"
   },
   "arguments": {
-    "links": "Links to MediaFire files or folders",
+    "links": "Links to Mediafire files or folders",
     "output": "Output directory (default: current directory)",
     "maxDownloads": "Maximum concurrent downloads",
-    "inputFile": "Path to a text file containing MediaFire links",
+    "inputFile": "Path to a text file containing Mediafire links",
     "details": "Enable detailed output (verbose mode)",
     "inspect": "Get detailed information about the provided link without downloading the file. This includes file name, size and other available metadata.",
     "beautify": "Return with a beautify format the data to show for the 'inspect' option.",
@@ -32,7 +32,8 @@
     "failedDownload": "Failed to download",
     "notFoundHeadersFile": "Headers file not found",
     "jsonParsedInvalid": "JSON must be an object with key-value pairs",
-    "jsonFormatInvalid": "Invalid JSON format"
+    "jsonFormatInvalid": "Invalid JSON format",
+    "failedLoadHeaders": "Failed to load custom headers"
   },
   "warnings": {
     "headerLineInvalid": "Invalid header line (missing ':')",
@@ -41,6 +42,8 @@
     "userAgentMissing": "Warning: \"User-Agent\" not specified. Some servers may block the request."
   },
   "messages": {
-    "downloadCompleted": "¡Download completed!"
+    "downloadCompleted": "¡Download completed!",
+    "headersExportedTo": "Default headers exported to",
+    "exportedHeaders": "You can now edit this file and use it with"
   }
 }

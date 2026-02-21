@@ -1,4 +1,3 @@
-import fs from "node:fs";
 import process from "node:process";
 import path from "node:path";
 import { Command } from "commander";
@@ -6,26 +5,8 @@ import chalk from "chalk";
 import { Downloader } from "../services/Downloader/index.ts";
 import { checkAndCreateFolder } from "../utils/checkAndCreateFolder/index.ts";
 import { i18n } from "../i18n/i18n.ts";
-import { HeadersFileParser } from "../helpers/HeadersFileParser/index.ts";
+import { HeadersHandler } from "../helpers/HeadersHandler/index.ts";
 import { readLinksFromFile } from "../helpers/readLinksFromFile.ts";
-
-
-const handleExportDefaultHeaders = (outputPath?: string) => {
-  const defaultPath = outputPath || "./headers.txt";
-  const resolvedPath = path.resolve(defaultPath);
-  const content = HeadersFileParser.exportDefaultHeaders();
-
-  fs.writeFileSync(resolvedPath, content, "utf-8");
-
-  console.log(chalk.green(`Default headers exported to: ${resolvedPath}`));
-  console.log(
-    chalk.cyan(
-      "\nYou can now edit this file and use it with: -H " +
-        path.basename(resolvedPath),
-    ),
-  );
-  process.exit(0);
-};
 
 export const action = (
   args: string[],
@@ -56,7 +37,7 @@ export const action = (
       const outputPath = typeof exportDefaultHeaders === "string"
         ? exportDefaultHeaders
         : undefined;
-      handleExportDefaultHeaders(outputPath);
+      HeadersHandler.exportDefaultHeaders(outputPath);
       return;
     }
 
@@ -81,7 +62,8 @@ export const action = (
     });
 
     if (headersFile) {
-      downloader.setCustomHeaders(headersFile);
+      const finalHeaders = HeadersHandler.buildCustomHeaders(headersFile);
+      downloader.setCustomHeaders(finalHeaders);
     }
 
     downloader.addLinks(links, output);

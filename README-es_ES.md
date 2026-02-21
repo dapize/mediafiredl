@@ -7,7 +7,7 @@
     </p>
 </div>
 
-Un programa de terminal simple pero muy útil para descargar archivos de mediafire.com (archivos y carpetas).
+Un programa de terminal simple pero muy útil para descargar archivos y carpetas de mediafire.com.
 
 ## 📸 Vista previa
 
@@ -18,19 +18,21 @@ Un programa de terminal simple pero muy útil para descargar archivos de mediafi
 ```bash
 Uso: mediafiredl [opciones] [links...]
 
-Descarga archivos y carpetas de MediaFire
+Descarga archivos y carpetas de Mediafire
 
 Argumentos:
-  links                         Enlaces de archivos o carpetas de MediaFire
+  links                         Enlaces de archivos o carpetas de Mediafire
 
 Optiones:
   -V, --version                 Muestra el número de versión
   -o, --output <path>           Directorio de salida (predeterminado: directorio actual) (predeterminado: "./")
   -m, --max-downloads <number>  Descargas simultáneas máximas (predeterminado: "2")
-  -i, --input-file <path>       Ruta a un archivo de texto que contiene enlaces de MediaFire
+  -i, --input-file <path>       Ruta a un archivo de texto que contiene enlaces de Mediafire
   -d, --details                 Habilitar salida detallada (modo detallado) (predeterminado: false)
   --inspect                     Obtiene información detallada sobre el enlace proporcionado sin descargar el archivo. (predeterminado: false)
   --beautify                    Devuelve con un formato embellecedor los datos a mostrar para la opción 'inspect'. (predeterminado: false)
+  -H, --headers-file <path>     Ruta al archivo de encabezados HTTP personalizados (formato raw o JSON)
+  --export-default-headers [path]  Exportar encabezados predeterminados a un archivo (predeterminado: ./headers.txt)
   -h, --help                    Mostrar ayuda
 ```
 
@@ -40,7 +42,7 @@ Solo tienes que ir a la [página de lanzamiento](https://github.com/dapize/media
 
 ```bash
 ## Ejemplo de una instalación en linux
-wget -c https://github.com/dapize/mediafiredl/releases/download/v0.3.1/mediafiredl_linux -O mediafiredl
+wget -c https://github.com/dapize/mediafiredl/releases/download/v0.4.0/mediafiredl_linux -O mediafiredl
 chmod +x ./mediafiredl
 ```
 
