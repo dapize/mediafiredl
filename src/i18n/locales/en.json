@@ -33,7 +33,10 @@
     "notFoundHeadersFile": "Headers file not found",
     "jsonParsedInvalid": "JSON must be an object with key-value pairs",
     "jsonFormatInvalid": "Invalid JSON format",
-    "failedLoadHeaders": "Failed to load custom headers"
+    "failedLoadHeaders": "Failed to load custom headers",
+    "invalidMaxDownloads": "Invalid maximum number of downloads: {{value}}",
+    "writeFile": "File write error: {{message}}",
+    "emptyResponse": "Empty response for: {{name}} | {{link}}"
   },
   "warnings": {
     "titleWarnings": "Headers Configuration Warnings",
@@ -41,17 +44,22 @@
     "acceptEncodingMissing": "\"Accept-Encoding\" not specified. Binary files may be corrupted. Recommended: \"identity\"",
     "acceptEncodingInvalid": "\"Accept-Encoding: {{valueHeader}}\" may cause file corruption. Recommended: \"identity\"",
     "userAgentMissing": "\"User-Agent\" not specified. Some servers may block the request.",
-    "warningQuestion": "Do you wish to continue despite the warnings?"
+    "deletePartial": "Could not delete partial file"
   },
   "messages": {
     "downloadCompleted": "¡Download completed!",
     "headersExportedTo": "Default headers exported to",
     "exportedHeaders": "You can now edit this file and use it with",
     "softwareUseful": "Please, if you find this software useful, leave me a star on GitHub",
-    "operationCancelled": "Operation cancelled by the user"
+    "operationCancelled": "Operation cancelled by the user",
+    "exportCancelled": "Export canceled!"
   },
   "answers": {
     "yes": "Sí",
     "no": "No"
+  },
+  "prompts": {
+    "despiteWarnings": "Do you wish to continue despite the warnings?",
+    "fileExists": "The file already exists: {{path}}"
   }
 }

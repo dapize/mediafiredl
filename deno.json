@@ -2,7 +2,7 @@
   "version": "0.4.0",
   "tasks": {
     "start": "deno run --allow-net --allow-read --allow-write --allow-env --allow-sys --unstable-sloppy-imports ./src/cli/commands.ts",
-    "build": "deno compile --allow-net --allow-read --allow-write --allow-env --allow-sys -o ./bin/mediafiredl ./src/cli/commands.ts",
+    "build": "rm -rf node_modules && deno compile --allow-net --allow-read --allow-write --allow-env --allow-sys --config deno.production.json -o ./bin/mediafiredl ./src/cli/commands.ts",
     "test": "deno run -A npm:vitest run --reporter verbose",
     "fm:check": "deno fmt --check",
     "fm:fix": "deno fmt src/",
@@ -10,12 +10,44 @@
     "lint:fix": "deno lint --fix"
   },
   "imports": {
+    "@biomejs/biome": "npm:@biomejs/biome@^2.4.4",
+    "@vitest/coverage-v8": "npm:@vitest/coverage-v8@^4.0.18",
+    "@types/cli-progress": "npm:@types/cli-progress@^3.11.6",
+    "@types/i18n": "npm:@types/i18n@^0.13.12",
+    "@types/node": "npm:@types/node@^25.3.0",
+    "@types/progress": "npm:@types/progress@^2.0.7",
+    "vitest": "npm:vitest@^4.0.18",
     "@inquirer/core": "npm:@inquirer/core@^11.1.4",
     "@inquirer/prompts": "npm:@inquirer/prompts@^8.2.1",
-    "commander": "npm:commander@^14.0.3",
     "i18n": "npm:i18n@^0.15.3",
     "chalk": "npm:chalk@^5.6.2",
+    "commander": "npm:commander@^14.0.3",
     "cli-progress": "npm:cli-progress@^3.12.0"
   },
-  "nodeModulesDir": "auto"
+  "nodeModulesDir": "auto",
+  "fmt": {
+    "useTabs": true,
+    "lineWidth": 140,
+    "indentWidth": 2,
+    "singleQuote": true,
+    "include": [
+      "src/"
+    ]
+  },
+  "lint": {
+    "include": [
+      "src/"
+    ],
+    "rules": {
+      "tags": [
+        "recommended"
+      ],
+      "include": [
+        "ban-untagged-todo"
+      ],
+      "exclude": [
+        "no-unused-vars"
+      ]
+    }
+  }
 }

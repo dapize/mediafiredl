@@ -138,13 +138,10 @@ export class Downloader extends Events {
     const response = await fetch(url, {
       headers: this.currentHeaders,
     });
-    if (!response.ok) {
-      throw new Error(
-        `${i18n.__("errors.failedDownload")} ${fileName}: ${response.status} ${response.statusText}`,
-      );
-    }
+    if (!response.ok) throw new Error(`${i18n.__("errors.failedDownload")} ${fileName}: ${response.status} ${response.statusText}`);
+    if (!response.body) throw new Error(i18n.__("errors.emptyResponse", { name:fileName, link: url }));
 
-    const reader = response.body!.getReader();
+    const reader = response.body.getReader();
     const absolutePath = path.resolve(output);
     checkAndCreateFolder(absolutePath);
     const filePath = path.join(absolutePath, fileName);
@@ -194,6 +191,10 @@ export class Downloader extends Events {
     progressBar,
   }: IWriteDiskArgs): Promise<void> {
     const fileStream = fs.createWriteStream(filePath);
+    fileStream.on('error', (streamError) => {
+      throw new Error(i18n.__("errors.writeFile", { message: streamError.message }));
+    });
+
     let downloaded = 0;
 
     try {
@@ -208,11 +209,19 @@ export class Downloader extends Events {
       }
       progressBar.completed();
     } catch (error) {
-      fileStream.close();
-      fs.unlinkSync(filePath);
+      if (!fileStream.closed) fileStream.close();
+      if (fs.existsSync(filePath)) {
+        try {
+          fs.unlinkSync(filePath);
+        } catch (_err) {
+          console.warn(`${i18n.__("warnings.deletePartial")}: ${filePath}`);
+        }
+      }
       throw error;
     } finally {
-      fileStream.end();
+      if (!fileStream.closed && !fileStream.destroyed) {
+        fileStream.end();
+      }
     }
   }
 
@@ -230,11 +239,11 @@ export class Downloader extends Events {
         const eta = (totalSize - downloaded) / (speed || 1);
         const etaFormated = convertMsToTime(eta * 1000) || "--:--";
         const downloadedInMiB = (downloaded / 1024 / 1024).toFixed(2);
-        const percentage = (downloaded / totalSize) * 100;
+        const percentage = totalSize > 0 ? (downloaded / totalSize) * 100 : 0;
 
         progressBar.update(Number(downloadedInMiB), {
           elapsed: elapsedFormated,
-          percentage: percentage,
+          percentage,
           value: formatBytes(downloaded),
           total: totalSizeFormatted,
           speed: `[${formatBytes(speed)}/s]`,

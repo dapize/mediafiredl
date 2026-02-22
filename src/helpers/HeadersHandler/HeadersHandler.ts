@@ -8,9 +8,23 @@ import { select } from '@inquirer/prompts';
 import { ExitPromptError } from '@inquirer/core';
 
 export class HeadersHandler {
-  static exportDefaultHeaders(outputPath?: string) {
+  static async exportDefaultHeaders(outputPath?: string) {
     const defaultPath = outputPath || "./headers.txt";
     const resolvedPath = path.resolve(defaultPath);
+
+    if (fs.existsSync(resolvedPath)) {
+      const overwrite = await select({
+        message: chalk.cyan(i18n.__("prompts.fileExists", { path: resolvedPath })),
+        choices: [
+          { name: i18n.__("answers.no"), value: false },
+          { name: i18n.__("answers.yes"), value: true }
+        ]
+      });
+      if (!overwrite) {
+        console.log(i18n.__("messages.exportCancelled"));
+        process.exit(0);
+      }
+    }
 
     const content = Object.entries(downloadHeaders).map(([key, value]) => `${key}: ${value}`).join("\n");
     fs.writeFileSync(resolvedPath, content, "utf-8");
@@ -35,7 +49,7 @@ export class HeadersHandler {
         warnings.forEach((warning) => console.log(chalk.yellow(`   ${warning}`)));
         console.log();
         const confirmed = await select({
-          message: chalk.cyan(i18n.__("warnings.warningQuestion")),
+          message: chalk.cyan(i18n.__("prompts.despiteWarnings")),
           choices: [
             { name: i18n.__("answers.no"), value: false },
             { name: i18n.__("answers.yes"), value: true }

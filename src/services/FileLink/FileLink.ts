@@ -31,7 +31,10 @@ export class FileLink {
 
     if (status === 301 || status === 302) {
       const location = response.headers.get("location");
-      if (location!.includes("/error.php")) {
+      if (!location) {
+        return false;
+      }
+      if (location.includes("/error.php")) {
         return false;
       }
       this.isPremium = true;
@@ -60,13 +63,21 @@ export class FileLink {
     let directLinkMatch = html.match(
       /<a[^>]*aria-label="Download file"[^>]*href="([^"]+)"/,
     );
-    let pureLink = directLinkMatch![1];
+    if (!directLinkMatch) {
+      throw new Error(i18n.__("errors.extractDetails", { rawLink }));
+    }
+
+    let pureLink = directLinkMatch[1];
     if (pureLink.includes("javascript:")) {
       directLinkMatch = html.match(
         /<a[^>]*aria-label="Download file"[^>]*data-scrambled-url="([^"]+)"/,
       );
-      pureLink = atob(directLinkMatch![1]);
+      if (!directLinkMatch) {
+        throw new Error(i18n.__("errors.extractDetails", { rawLink }));
+      }
+      pureLink = atob(directLinkMatch[1]);
     }
+
     const fileNameMatch = html.match(
       /<div[^>]*class="dl-btn-label"[^>]*title="([^"]+)"/,
     );

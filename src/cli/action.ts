@@ -33,29 +33,31 @@ export const action = async (
   } = options;
 
   try {
+    // Exporting default headers
     if (exportDefaultHeaders !== undefined) {
       const outputPath = typeof exportDefaultHeaders === "string"
         ? exportDefaultHeaders
         : undefined;
-      HeadersHandler.exportDefaultHeaders(outputPath);
+      await HeadersHandler.exportDefaultHeaders(outputPath);
       return;
     }
 
+    // Preparing the links
     const output = path.resolve(options.output);
     checkAndCreateFolder(output);
-
-    if (args.length > 0 && inputFile) {
-      throw new Error(i18n.__("errors.inputFileAndArgLink"));
-    }
-
+    if (args.length > 0 && inputFile) throw new Error(i18n.__("errors.inputFileAndArgLink"));
     const links = inputFile ? readLinksFromFile(inputFile) : args;
+    if (links.length === 0) throw new Error(`\n${i18n.__("errors.noLinks")}\n`);
 
-    if (links.length === 0) {
-      throw new Error(`\n${i18n.__("errors.noLinks")}\n`);
+    // pre configuration
+    const maxDownloadsNum = parseInt(maxDownloads, 10);
+    if (isNaN(maxDownloadsNum) || maxDownloadsNum < 1) {
+      throw new Error(i18n.__("errors.invalidMaxDownloads", { value: maxDownloads }));
     }
 
+    // Init
     const downloader = new Downloader({
-      concurrencyLimit: parseInt(maxDownloads, 10),
+      concurrencyLimit: maxDownloadsNum,
       details,
       inspect,
       beautify,

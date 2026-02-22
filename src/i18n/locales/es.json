@@ -33,7 +33,9 @@
     "notFoundHeadersFile": "Archivo de encabezados no encontrado",
     "jsonParsedInvalid": "El archivo JSON debe ser un objeto con pares clave-valor",
     "jsonFormatInvalid": "Formato JSON no válido",
-    "failedLoadHeaders": "No se pudieron cargar los encabezados personalizados"
+    "failedLoadHeaders": "No se pudieron cargar los encabezados personalizados",
+    "writeFile": "Error de escritura de archivo: {{message}}",
+    "emptyResponse": "Respuesta vacía para: {{name}} | {{link}}"
   },
   "warnings": {
     "titleWarnings": "Advertencias de configuración de encabezados",
@@ -41,17 +43,22 @@
     "acceptEncodingMissing": "\"Accept-Encoding\" no especificado. Los archivos binarios podrían dañarse, se recomienda: \"identity\"",
     "acceptEncodingInvalid": "\"Accept-Encoding: {{valueHeader}}\" puede causar corrupción de archivos. Se recomienda: \"identity\"",
     "userAgentMissing": "\"User-Agent\" no especificado. Algunos servidores pueden bloquear la solicitud.",
-    "warningQuestion": "¿Deseas continuar a pesar de las advertencias?"
+    "deletePartial": "No se pudo eliminar el archivo parcial"
   },
   "messages": {
     "downloadCompleted": "¡Descarga completa!",
     "headersExportedTo": "Encabezados predeterminados exportados en",
     "exportedHeaders": "Ahora puedes editar este archivo y usarlo con",
     "softwareUseful": "Por favor, si ves que este software te resulta útil, déjame una estrella en Github",
-    "operationCancelled": "Operación cancelada por el usuario"
+    "operationCancelled": "Operación cancelada por el usuario",
+    "exportCancelled": "¡Exportación cancelada!"
   },
   "answers": {
     "yes": "Yes",
     "no": "No"
+  },
+  "prompts": {
+    "despiteWarnings": "¿Deseas continuar a pesar de las advertencias?",
+    "fileExists": "Ya existe el archivo: {{path}}"
   }
 }
