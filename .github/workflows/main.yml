@@ -25,7 +25,7 @@ jobs:
         run: 'deno install'
 
       - name: Build step
-        run: 'deno compile --target x86_64-unknown-linux-gnu --allow-net --allow-read --allow-write --allow-env -o ./bin/mediafiredl_linux ./src/cli/commands.ts'
+        run: 'deno compile --target x86_64-unknown-linux-gnu --allow-net --allow-read --allow-write --allow-env --config deno.production.json -o ./bin/mediafiredl_linux ./src/cli/commands.ts'
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
@@ -51,7 +51,7 @@ jobs:
         run: 'deno install'
 
       - name: Build step
-        run: 'deno compile --allow-net --allow-read --allow-write --allow-env -o ./bin/mediafiredl_macos-arm64 ./src/cli/commands.ts'
+        run: 'deno compile --allow-net --allow-read --allow-write --allow-env --config deno.production.json -o ./bin/mediafiredl_macos-arm64 ./src/cli/commands.ts'
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
@@ -77,7 +77,7 @@ jobs:
         run: 'deno install'
 
       - name: Build step
-        run: 'deno compile --allow-net --allow-read --allow-write --allow-env -o ./bin/mediafiredl_macos-intel ./src/cli/commands.ts'
+        run: 'deno compile --allow-net --allow-read --allow-write --allow-env --config deno.production.json -o ./bin/mediafiredl_macos-intel ./src/cli/commands.ts'
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
@@ -103,7 +103,7 @@ jobs:
         run: 'deno install'
 
       - name: Build step
-        run: 'deno compile --allow-net --allow-read --allow-write --allow-env -o ./bin/mediafiredl_win-x86_64 ./src/cli/commands.ts'
+        run: 'deno compile --allow-net --allow-read --allow-write --allow-env --config deno.production.json -o ./bin/mediafiredl_win-x86_64 ./src/cli/commands.ts'
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4

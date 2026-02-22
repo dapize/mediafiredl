@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "start": "npx tsx ./src/cli/commands.ts",
-    "build": "rm -rf ./dist/mediafiredl.cjs && npx esbuild --format=cjs --target=node23 --platform=node --bundle --outfile=./dist/mediafiredl.cjs ./src/cli/commands.ts",
+    "build": "rm -rf ./dist/mediafiredl.cjs && npx esbuild --format=cjs --target=node23 --platform=node --bundle --alias:@i18n=./src/i18n --alias:@utils=./src/utils --alias:@services=./src/services --alias:@helpers=./src/helpers --outfile=./dist/mediafiredl.cjs ./src/cli/commands.ts",
     "compile": "node compile-win-arm64.js"
   },
   "keywords": [],
