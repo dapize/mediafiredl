@@ -10,6 +10,10 @@
     "lint:fix": "deno lint --fix"
   },
   "imports": {
+    "@helpers/": "./src/helpers/",
+    "@i18n/": "./src/i18n/",
+    "@services/": "./src/services/",
+    "@utils/": "./src/utils/",
     "@biomejs/biome": "npm:@biomejs/biome@^2.4.4",
     "@vitest/coverage-v8": "npm:@vitest/coverage-v8@^4.0.18",
     "@types/cli-progress": "npm:@types/cli-progress@^3.11.6",

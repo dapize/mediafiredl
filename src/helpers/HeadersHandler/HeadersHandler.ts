@@ -1,170 +1,169 @@
 import fs from "node:fs";
 import path from "node:path";
-import chalk from "chalk";
 import process from "node:process";
-import { IHeaders, downloadHeaders } from "../../utils/headers/index.ts";
-import { i18n } from "../../i18n/i18n.ts";
-import { select } from '@inquirer/prompts';
-import { ExitPromptError } from '@inquirer/core';
+
+import { ExitPromptError } from "@inquirer/core";
+import { select } from "@inquirer/prompts";
+import chalk from "chalk";
+
+import { i18n } from "@i18n/i18n.ts";
+
+import { downloadHeaders, type IHeaders } from "@utils/headers/index.ts";
 
 export class HeadersHandler {
-  static async exportDefaultHeaders(outputPath?: string) {
-    const defaultPath = outputPath || "./headers.txt";
-    const resolvedPath = path.resolve(defaultPath);
+	static async exportDefaultHeaders(outputPath?: string) {
+		const defaultPath = outputPath || "./headers.txt";
+		const resolvedPath = path.resolve(defaultPath);
 
-    if (fs.existsSync(resolvedPath)) {
-      const overwrite = await select({
-        message: chalk.cyan(i18n.__("prompts.fileExists", { path: resolvedPath })),
-        choices: [
-          { name: i18n.__("answers.no"), value: false },
-          { name: i18n.__("answers.yes"), value: true }
-        ]
-      });
-      if (!overwrite) {
-        console.log(i18n.__("messages.exportCancelled"));
-        process.exit(0);
-      }
-    }
+		if (fs.existsSync(resolvedPath)) {
+			const overwrite = await select({
+				message: chalk.cyan(i18n.__("prompts.fileExists", { path: resolvedPath })),
+				choices: [
+					{ name: i18n.__("answers.no"), value: false },
+					{ name: i18n.__("answers.yes"), value: true },
+				],
+			});
+			if (!overwrite) {
+				console.log(i18n.__("messages.exportCancelled"));
+				process.exit(0);
+			}
+		}
 
-    const content = Object.entries(downloadHeaders).map(([key, value]) => `${key}: ${value}`).join("\n");
-    fs.writeFileSync(resolvedPath, content, "utf-8");
+		const content = Object.entries(downloadHeaders)
+			.map(([key, value]) => `${key}: ${value}`)
+			.join("\n");
+		fs.writeFileSync(resolvedPath, content, "utf-8");
 
-    console.log(chalk.green(`${i18n.__("messages.headersExportedTo")}: ${resolvedPath}`));
-    console.log(
-      chalk.cyan(
-        `\n${i18n.__("messages.exportedHeaders")}: -H ` +
-          path.basename(resolvedPath),
-      ),
-    );
-    process.exit(0);
-  }
-  
-  static async buildCustomHeaders(headersFilePath: string): Promise<IHeaders> {
-    try {
-      const parsedHeaders = this.parseFile(headersFilePath);
-      const warnings = this.validateCriticalHeaders(parsedHeaders);
+		console.log(chalk.green(i18n.__("messages.headersExportedTo", { path: resolvedPath })));
+		console.log(chalk.cyan(`\n${i18n.__("messages.exportedHeaders", { path: path.basename(resolvedPath) })}`));
+		process.exit(0);
+	}
 
-      if (warnings.length) {
-        console.log(chalk.yellow(`\n⚠️  ${i18n.__("warnings.titleWarnings")}:`));
-        warnings.forEach((warning) => console.log(chalk.yellow(`   ${warning}`)));
-        console.log();
-        const confirmed = await select({
-          message: chalk.cyan(i18n.__("prompts.despiteWarnings")),
-          choices: [
-            { name: i18n.__("answers.no"), value: false },
-            { name: i18n.__("answers.yes"), value: true }
-          ]
-        });
-        
-        if (!confirmed) {
-          process.exit(0);
-        }
-      }
+	static async buildCustomHeaders(headersFilePath: string): Promise<IHeaders> {
+		try {
+			const parsedHeaders = HeadersHandler.parseFile(headersFilePath);
+			const warnings = HeadersHandler.validateCriticalHeaders(parsedHeaders);
 
-      console.clear();
-      return this.mergeWithDefaults(parsedHeaders);
-    } catch (error) {
-      if (error instanceof ExitPromptError) {
-        console.log(`\n${i18n.__("messages.operationCancelled")} (Ctrl+C).`);
-        process.exit(0);
-      } else {
-        throw new Error(
-          `${i18n.__("errors.failedLoadHeaders")}: ${error instanceof Error ? error.message : error}`,
-        );
-      }
-    }
-  }
+			if (warnings.length) {
+				console.log(chalk.yellow(`\n⚠️  ${i18n.__("warnings.titleWarnings")}:`));
+				warnings.forEach((warning) => {
+					console.log(chalk.yellow(`   ${warning}`));
+				});
+				console.log();
+				const confirmed = await select({
+					message: chalk.cyan(i18n.__("prompts.despiteWarnings")),
+					choices: [
+						{ name: i18n.__("answers.no"), value: false },
+						{ name: i18n.__("answers.yes"), value: true },
+					],
+				});
 
-  private static parseFile(filePath: string): IHeaders {
-    if (!fs.existsSync(filePath)) {
-      throw new Error(`${i18n.__("errors.notFoundHeadersFile")}: ${filePath}`);
-    }
+				if (!confirmed) {
+					process.exit(0);
+				}
+			}
 
-    const content = fs.readFileSync(filePath, "utf-8").trim();
-    const ext = path.extname(filePath).toLowerCase();
+			console.clear();
+			return HeadersHandler.mergeWithDefaults(parsedHeaders);
+		} catch (error) {
+			if (error instanceof ExitPromptError) {
+				console.log(`\n${i18n.__("messages.operationCancelled")}`);
+				process.exit(0);
+			} else {
+				throw new Error(`${i18n.__("errors.failedLoadHeaders")}: ${error instanceof Error ? error.message : error}`);
+			}
+		}
+	}
 
-    if (ext === ".json" || content.startsWith("{")) {
-      return this.parseJSON(content);
-    }
+	private static parseFile(filePath: string): IHeaders {
+		if (!fs.existsSync(filePath)) {
+			throw new Error(i18n.__("errors.notFoundHeadersFile", { path: filePath }));
+		}
 
-    return this.parseHTTPRaw(content);
-  }
+		const content = fs.readFileSync(filePath, "utf-8").trim();
+		const ext = path.extname(filePath).toLowerCase();
 
-  private static validateCriticalHeaders(headers: IHeaders): string[] {
-    const warnings: string[] = [];
+		if (ext === ".json" || content.startsWith("{")) {
+			return HeadersHandler.parseJSON(content);
+		}
 
-    if (!headers["Accept-Encoding"]) {
-      warnings.push(i18n.__("warnings.acceptEncodingMissing"));
-    } else if (
-      headers["Accept-Encoding"] !== "identity" &&
-      !headers["Accept-Encoding"].includes("identity")
-    ) {
-      warnings.push(i18n.__("warnings.acceptEncodingInvalid", { valueHeader: headers["Accept-Encoding"] }));
-    }
+		return HeadersHandler.parseHTTPRaw(content);
+	}
 
-    if (!headers["User-Agent"]) {
-      warnings.push(i18n.__("warnings.userAgentMissing"));
-    }
+	private static validateCriticalHeaders(headers: IHeaders): string[] {
+		const warnings: string[] = [];
 
-    return warnings;
-  }
+		if (!headers["Accept-Encoding"]) {
+			warnings.push(i18n.__("warnings.acceptEncodingMissing"));
+		} else if (headers["Accept-Encoding"] !== "identity" && !headers["Accept-Encoding"].includes("identity")) {
+			warnings.push(
+				i18n.__("warnings.acceptEncodingInvalid", {
+					valueHeader: headers["Accept-Encoding"],
+				}),
+			);
+		}
 
-  private static mergeWithDefaults(customHeaders: IHeaders): IHeaders {
-    return {
-      ...downloadHeaders,
-      ...customHeaders,
-    };
-  }
+		if (!headers["User-Agent"]) {
+			warnings.push(i18n.__("warnings.userAgentMissing"));
+		}
 
-  private static parseJSON(content: string): IHeaders {
-    try {
-      const parsed = JSON.parse(content);
+		return warnings;
+	}
 
-      if (typeof parsed !== "object" || Array.isArray(parsed)) {
-        throw new Error(i18n.__("errors.jsonParsedInvalid"));
-      }
+	private static mergeWithDefaults(customHeaders: IHeaders): IHeaders {
+		return {
+			...downloadHeaders,
+			...customHeaders,
+		};
+	}
 
-      // Convertir todos los valores a string
-      const headers: IHeaders = {};
-      for (const [key, value] of Object.entries(parsed)) {
-        headers[key] = String(value);
-      }
+	private static parseJSON(content: string): IHeaders {
+		try {
+			const parsed = JSON.parse(content);
 
-      return headers;
-    } catch (error) {
-      throw new Error(
-        `${i18n.__("errors.jsonFormatInvalid")}: ${error instanceof Error ? error.message : error}`,
-      );
-    }
-  }
+			if (typeof parsed !== "object" || Array.isArray(parsed)) {
+				throw new Error(i18n.__("errors.jsonParsedInvalid"));
+			}
 
-  private static parseHTTPRaw(content: string): IHeaders {
-    const headers: IHeaders = {};
-    const lines = content.split("\n");
+			// Convertir todos los valores a string
+			const headers: IHeaders = {};
+			for (const [key, value] of Object.entries(parsed)) {
+				headers[key] = String(value);
+			}
 
-    for (const line of lines) {
-      const trimmedLine = line.trim();
+			return headers;
+		} catch (error) {
+			throw new Error(`${i18n.__("errors.jsonFormatInvalid")}: ${error instanceof Error ? error.message : error}`);
+		}
+	}
 
-      // Ignorar líneas vacías y comentarios
-      if (!trimmedLine || trimmedLine.startsWith("#")) {
-        continue;
-      }
+	private static parseHTTPRaw(content: string): IHeaders {
+		const headers: IHeaders = {};
+		const lines = content.split("\n");
 
-      // Buscar el primer ':' para separar key:value
-      const colonIndex = trimmedLine.indexOf(":");
-      if (colonIndex === -1) {
-        console.warn(`${i18n.__("warnings.headerLineInvalid")}: ${trimmedLine}`);
-        continue;
-      }
+		for (const line of lines) {
+			const trimmedLine = line.trim();
 
-      const key = trimmedLine.slice(0, colonIndex).trim();
-      const value = trimmedLine.slice(colonIndex + 1).trim();
+			// Ignorar líneas vacías y comentarios
+			if (!trimmedLine || trimmedLine.startsWith("#")) {
+				continue;
+			}
 
-      if (key && value) {
-        headers[key] = value;
-      }
-    }
+			// Buscar el primer ':' para separar key:value
+			const colonIndex = trimmedLine.indexOf(":");
+			if (colonIndex === -1) {
+				console.warn(`${i18n.__("warnings.headerLineInvalid")}: ${trimmedLine}`);
+				continue;
+			}
 
-    return headers;
-  }
+			const key = trimmedLine.slice(0, colonIndex).trim();
+			const value = trimmedLine.slice(colonIndex + 1).trim();
+
+			if (key && value) {
+				headers[key] = value;
+			}
+		}
+
+		return headers;
+	}
 }

@@ -14,7 +14,7 @@
     "exportHeaders": "Exportar encabezados predeterminados a un archivo (predeterminado: ./headers.txt)"
   },
   "metadata": {
-    "link": "Enlace",
+    "link": "Enlace:",
     "directLink": "Enlace directo",
     "fileName": "Nombre del archivo",
     "size": "Tamaño"
@@ -27,15 +27,15 @@
     "unknown": "Se produjo un error desconocido.",
     "extractDetails": "No se pudo extraer el enlace de descarga o el nombre del archivo desde {{rawLink}}",
     "fetchPureLink": "No se pudieron obtener los encabezados del enlace puro: {{statusText}}",
-    "invalidformat": "Formato inválido",
-    "invalidUnit": "Unidad no válida",
-    "failedDownload": "No se pudo descargar",
-    "notFoundHeadersFile": "Archivo de encabezados no encontrado",
+    "invalidformat": "Formato inválido: {{measurement}}",
+    "invalidUnit": "Unidad no válida: {{unit}}",
+    "failedDownload": "No se pudo descargar {{fileName}}: {{responseStatus}} {{responseStatusText}}",
+    "notFoundHeadersFile": "Archivo de encabezados no encontrado: {{path}}",
     "jsonParsedInvalid": "El archivo JSON debe ser un objeto con pares clave-valor",
     "jsonFormatInvalid": "Formato JSON no válido",
     "failedLoadHeaders": "No se pudieron cargar los encabezados personalizados",
     "writeFile": "Error de escritura de archivo: {{message}}",
-    "emptyResponse": "Respuesta vacía para: {{name}} | {{link}}"
+    "emptyResponse": "Respuesta vacía para: {{fileName}} | {{link}}"
   },
   "warnings": {
     "titleWarnings": "Advertencias de configuración de encabezados",
@@ -43,14 +43,14 @@
     "acceptEncodingMissing": "\"Accept-Encoding\" no especificado. Los archivos binarios podrían dañarse, se recomienda: \"identity\"",
     "acceptEncodingInvalid": "\"Accept-Encoding: {{valueHeader}}\" puede causar corrupción de archivos. Se recomienda: \"identity\"",
     "userAgentMissing": "\"User-Agent\" no especificado. Algunos servidores pueden bloquear la solicitud.",
-    "deletePartial": "No se pudo eliminar el archivo parcial"
+    "deletePartial": "No se pudo eliminar el archivo parcial {{filePath}}"
   },
   "messages": {
     "downloadCompleted": "¡Descarga completa!",
-    "headersExportedTo": "Encabezados predeterminados exportados en",
-    "exportedHeaders": "Ahora puedes editar este archivo y usarlo con",
+    "headersExportedTo": "Encabezados predeterminados exportados en: {{path}}",
+    "exportedHeaders": "Ahora puedes editar este archivo y usarlo con: -H {{path}}",
     "softwareUseful": "Por favor, si ves que este software te resulta útil, déjame una estrella en Github",
-    "operationCancelled": "Operación cancelada por el usuario",
+    "operationCancelled": "Operación cancelada por el usuario (Ctrl+C)",
     "exportCancelled": "¡Exportación cancelada!"
   },
   "answers": {

@@ -27,16 +27,16 @@
     "unknown": "An unknown error occurred.",
     "extractDetails": "Could not extract download link or file name from {{rawLink}}",
     "fetchPureLink": "Failed to fetch headers from pure link: {{statusText}}",
-    "invalidformat": "Invalid format",
-    "invalidUnit": "Invalid unit",
-    "failedDownload": "Failed to download",
-    "notFoundHeadersFile": "Headers file not found",
+    "invalidformat": "Invalid format: {{measurement}}",
+    "invalidUnit": "Invalid unit: {{unit}}",
+    "failedDownload": "Failed to download {{fileName}}: {{responseStatus}} {{responseStatusText}}",
+    "notFoundHeadersFile": "Headers file not found: {{path}}",
     "jsonParsedInvalid": "JSON must be an object with key-value pairs",
     "jsonFormatInvalid": "Invalid JSON format",
     "failedLoadHeaders": "Failed to load custom headers",
     "invalidMaxDownloads": "Invalid maximum number of downloads: {{value}}",
     "writeFile": "File write error: {{message}}",
-    "emptyResponse": "Empty response for: {{name}} | {{link}}"
+    "emptyResponse": "Empty response for: {{fileName}} | {{link}}"
   },
   "warnings": {
     "titleWarnings": "Headers Configuration Warnings",
@@ -44,14 +44,14 @@
     "acceptEncodingMissing": "\"Accept-Encoding\" not specified. Binary files may be corrupted. Recommended: \"identity\"",
     "acceptEncodingInvalid": "\"Accept-Encoding: {{valueHeader}}\" may cause file corruption. Recommended: \"identity\"",
     "userAgentMissing": "\"User-Agent\" not specified. Some servers may block the request.",
-    "deletePartial": "Could not delete partial file"
+    "deletePartial": "Could not delete partial file {{filePath}}"
   },
   "messages": {
     "downloadCompleted": "¡Download completed!",
-    "headersExportedTo": "Default headers exported to",
-    "exportedHeaders": "You can now edit this file and use it with",
+    "headersExportedTo": "Default headers exported to: {{path}}",
+    "exportedHeaders": "You can now edit this file and use it with: -H {{path}}",
     "softwareUseful": "Please, if you find this software useful, leave me a star on GitHub",
-    "operationCancelled": "Operation cancelled by the user",
+    "operationCancelled": "Operation cancelled by the user (Ctrl+C)",
     "exportCancelled": "Export canceled!"
   },
   "answers": {
