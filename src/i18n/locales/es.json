@@ -22,7 +22,7 @@
   "errors": {
     "notFoundInputFile": "Archivo de entrada no encontrado: {{filePath}}",
     "inputFileAndArgLink": "No se pueden utilizar simultáneamente el archivo de entrada y los enlaces directos",
-    "noLinks": "No se proporcionan enlaces.",
+    "noLinks": "No se proporcionarón enlaces.",
     "invalidLinks": "Enlaces inválidos",
     "unknown": "Se produjo un error desconocido.",
     "extractDetails": "No se pudo extraer el enlace de descarga o el nombre del archivo desde {{rawLink}}",
@@ -36,14 +36,22 @@
     "failedLoadHeaders": "No se pudieron cargar los encabezados personalizados"
   },
   "warnings": {
+    "titleWarnings": "Advertencias de configuración de encabezados",
     "headerLineInvalid": "Línea de encabezado no válida (falta ':')",
-    "acceptEncodingMissing": "Advertencia: \"Accept-Encoding\" no especificado. Los archivos binarios podrían dañarse, se recomienda: \"identity\"",
-    "acceptEncodingInvalid": "Advertencia: \"Accept-Encoding: {{valueHeader}}\" puede causar corrupción de archivos. Se recomienda: \"identity\"",
-    "userAgentMissing": "Advertencia: \"User-Agent\" no especificado. Algunos servidores pueden bloquear la solicitud."
+    "acceptEncodingMissing": "\"Accept-Encoding\" no especificado. Los archivos binarios podrían dañarse, se recomienda: \"identity\"",
+    "acceptEncodingInvalid": "\"Accept-Encoding: {{valueHeader}}\" puede causar corrupción de archivos. Se recomienda: \"identity\"",
+    "userAgentMissing": "\"User-Agent\" no especificado. Algunos servidores pueden bloquear la solicitud.",
+    "warningQuestion": "¿Deseas continuar a pesar de las advertencias?"
   },
   "messages": {
     "downloadCompleted": "¡Descarga completa!",
     "headersExportedTo": "Encabezados predeterminados exportados en",
-    "exportedHeaders": "Ahora puedes editar este archivo y usarlo con"
+    "exportedHeaders": "Ahora puedes editar este archivo y usarlo con",
+    "softwareUseful": "Por favor, si ves que este software te resulta útil, déjame una estrella en Github",
+    "operationCancelled": "Operación cancelada por el usuario"
+  },
+  "answers": {
+    "yes": "Yes",
+    "no": "No"
   }
 }

@@ -24,4 +24,7 @@ program
   .option("--export-default-headers [path]", i18n.__("arguments.exportHeaders"))
   .action(action);
 
+program.addHelpText('after', `
+💬 ${i18n.__("messages.softwareUseful")} https://github.com/dapize/mediafiredl`);
+
 program.parse();

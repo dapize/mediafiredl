@@ -8,7 +8,7 @@ import { i18n } from "../i18n/i18n.ts";
 import { HeadersHandler } from "../helpers/HeadersHandler/index.ts";
 import { readLinksFromFile } from "../helpers/readLinksFromFile.ts";
 
-export const action = (
+export const action = async (
   args: string[],
   options: {
     output: string;
@@ -62,8 +62,8 @@ export const action = (
     });
 
     if (headersFile) {
-      const finalHeaders = HeadersHandler.buildCustomHeaders(headersFile);
-      downloader.setCustomHeaders(finalHeaders);
+      const finalHeaders = await HeadersHandler.buildCustomHeaders(headersFile);
+      if (finalHeaders) downloader.setCustomHeaders(finalHeaders);
     }
 
     downloader.addLinks(links, output);
@@ -81,7 +81,7 @@ export const action = (
         );
         console.log(`\n${invalidTitle}:\n${[...invalidLinks].join('\n')}`);
       }
-      process.exit(1);
+      process.exit(0);
     });
   } catch (error) {
     if (error instanceof Error) {
@@ -89,6 +89,7 @@ export const action = (
     } else {
       console.error(chalk.red.bold(i18n.__("errors.unknown")));
     }
+    console.log('\n');
     command.outputHelp();
     process.exit(1);
   }

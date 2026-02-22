@@ -10,10 +10,12 @@
     "lint:fix": "deno lint --fix"
   },
   "imports": {
-    "chalk": "npm:chalk@^5.3.0",
-    "cli-progress": "npm:cli-progress@^3.12.0",
-    "commander": "npm:commander@^12.1.0",
-    "i18n": "npm:i18n@^0.15.1"
+    "@inquirer/core": "npm:@inquirer/core@^11.1.4",
+    "@inquirer/prompts": "npm:@inquirer/prompts@^8.2.1",
+    "commander": "npm:commander@^14.0.3",
+    "i18n": "npm:i18n@^0.15.3",
+    "chalk": "npm:chalk@^5.6.2",
+    "cli-progress": "npm:cli-progress@^3.12.0"
   },
   "nodeModulesDir": "auto"
 }

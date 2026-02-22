@@ -4,6 +4,8 @@ import chalk from "chalk";
 import process from "node:process";
 import { IHeaders, downloadHeaders } from "../../utils/headers/index.ts";
 import { i18n } from "../../i18n/i18n.ts";
+import { select } from '@inquirer/prompts';
+import { ExitPromptError } from '@inquirer/core';
 
 export class HeadersHandler {
   static exportDefaultHeaders(outputPath?: string) {
@@ -23,23 +25,39 @@ export class HeadersHandler {
     process.exit(0);
   }
   
-  static buildCustomHeaders(headersFilePath: string): IHeaders {
+  static async buildCustomHeaders(headersFilePath: string): Promise<IHeaders> {
     try {
       const parsedHeaders = this.parseFile(headersFilePath);
       const warnings = this.validateCriticalHeaders(parsedHeaders);
 
       if (warnings.length) {
-        console.log(chalk.yellow("\n⚠️  Headers Configuration Warnings:"));
+        console.log(chalk.yellow(`\n⚠️  ${i18n.__("warnings.titleWarnings")}:`));
         warnings.forEach((warning) => console.log(chalk.yellow(`   ${warning}`)));
-        // TODO: Add question in the CLI for continue or not.
+        console.log();
+        const confirmed = await select({
+          message: chalk.cyan(i18n.__("warnings.warningQuestion")),
+          choices: [
+            { name: i18n.__("answers.no"), value: false },
+            { name: i18n.__("answers.yes"), value: true }
+          ]
+        });
+        
+        if (!confirmed) {
+          process.exit(0);
+        }
       }
 
-      // Merge con headers por defecto
+      console.clear();
       return this.mergeWithDefaults(parsedHeaders);
     } catch (error) {
-      throw new Error(
-        `${i18n.__("errors.failedLoadHeaders")}: ${error instanceof Error ? error.message : error}`,
-      );
+      if (error instanceof ExitPromptError) {
+        console.log(`\n${i18n.__("messages.operationCancelled")} (Ctrl+C).`);
+        process.exit(0);
+      } else {
+        throw new Error(
+          `${i18n.__("errors.failedLoadHeaders")}: ${error instanceof Error ? error.message : error}`,
+        );
+      }
     }
   }
 
