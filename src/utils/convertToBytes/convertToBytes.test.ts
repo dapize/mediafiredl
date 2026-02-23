@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 
-import EsTranslation from "../../i18n/locales/es.json" with { type: "json" };
+import { i18n } from "@i18n/i18n.ts";
+
 import { convertToBytes } from "./convertToBytes.ts";
 
 describe("convertToBytes", () => {
@@ -35,8 +36,8 @@ describe("convertToBytes", () => {
 	});
 
 	it("Should throw an error When input is invalid", () => {
-		expect(() => convertToBytes("88")).toThrow(`${EsTranslation.errors.invalidformat}: 88`);
-		expect(() => convertToBytes("KB")).toThrow(`${EsTranslation.errors.invalidformat}: KB`);
-		expect(() => convertToBytes("29.09XYZ")).toThrow(`${EsTranslation.errors.invalidUnit}: XYZ`);
+		expect(() => convertToBytes("88")).toThrow(i18n.__("errors.invalidformat", { measurement: "88" }));
+		expect(() => convertToBytes("KB")).toThrow(i18n.__("errors.invalidformat", { measurement: "KB" }));
+		expect(() => convertToBytes("29.09XYZ")).toThrow(i18n.__("errors.invalidUnit", { measurement: "XYZ" }));
 	});
 });

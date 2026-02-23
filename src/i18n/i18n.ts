@@ -21,4 +21,4 @@ if (locales.includes(osLanguage)) {
 	i18n.setLocale(osLanguage);
 }
 
-export { i18n };
+export { i18n, EsTranslation, EnTranslation };

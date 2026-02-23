@@ -131,7 +131,7 @@ export class Downloader extends Events {
 			throw new Error(
 				i18n.__("errors.failedDownload", {
 					fileName,
-					responseStatus: response.status,
+					responseStatus: String(response.status),
 					responseStatusText: response.statusText,
 				}),
 			);
