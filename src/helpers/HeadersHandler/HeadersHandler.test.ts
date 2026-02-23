@@ -154,6 +154,36 @@ describe("HeadersHandler", () => {
 
 			testFiles.push(customPath);
 		});
+
+		it("Should overwrite the file When the file headers.txt already exists", async () => {
+			const filePath = createTestFile("headers.txt", "");
+			testFiles.push(filePath);
+
+			const { select } = await import("@inquirer/prompts");
+			vi.mocked(select).mockResolvedValue(true);
+
+			try {
+				await HeadersHandler.exportDefaultHeaders(filePath);
+			} catch (e) {
+				expect((e as Error).message).toContain("process.exit called with code 0");
+			}
+		});
+
+		it("Should show a message When is chosen don't overwrite the file headers.txt", async () => {
+			const filePath = createTestFile("headers.txt", "");
+			testFiles.push(filePath);
+
+			const { select } = await import("@inquirer/prompts");
+			vi.mocked(select).mockResolvedValue(false);
+
+			try {
+				await HeadersHandler.exportDefaultHeaders(filePath);
+			} catch (_) {
+				// all good XD
+			}
+
+			expect(console.log).toHaveBeenCalledWith(expect.stringContaining(i18n.__("messages.exportCancelled")));
+		});
 	});
 
 	describe("buildCustomHeaders", () => {
