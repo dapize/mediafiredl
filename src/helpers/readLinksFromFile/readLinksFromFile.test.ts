@@ -1,5 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
 
+import { i18n } from "@i18n/i18n.ts";
+
 const { existsSyncMock, readFileSyncMock } = vi.hoisted(() => {
 	return {
 		existsSyncMock: vi.fn().mockReturnValue(true),
@@ -20,15 +22,13 @@ vi.mock("fs", () => ({
 	readFileSync: readFileSyncMock,
 }));
 
-import { i18n } from "@i18n/i18n.ts";
-
 import { readLinksFromFile } from "./readLinksFromFile.ts";
 
 describe("readLinksFromFile", () => {
 	it("Should response with throw new Error When the file dont exists", () => {
 		existsSyncMock.mockReturnValue(false);
 		const filePath = "/fileA.txt";
-		expect(() => readLinksFromFile(filePath)).toThrow(i18n.__("errors.notFoundInputFile", { filePath }));
+		expect(() => readLinksFromFile(filePath)).toThrow(`${i18n.__("errors.notFoundInputFile")}: ${filePath}`);
 	});
 
 	it("Should read file correctly When file exists", () => {

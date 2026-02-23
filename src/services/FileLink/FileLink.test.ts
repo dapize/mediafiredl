@@ -115,7 +115,7 @@ describe("FileLink Class Tests", () => {
 		});
 
 		const fileLink = new FileLink(links[1]);
-		await expect(fileLink.getDetails()).rejects.toThrow(i18n.__("errors.extractDetails", { rawLink: links[1] }));
+		await expect(fileLink.getDetails()).rejects.toThrow(`${i18n.__("errors.extractDetails")}: ${links[1]}`);
 	});
 
 	it("Should extract directLink When the file is non-premium and HTML link is a javascript code", async () => {
@@ -151,7 +151,7 @@ describe("FileLink Class Tests", () => {
 		});
 
 		const fileLink = new FileLink(links[1]);
-		await expect(fileLink.getDetails()).rejects.toThrow(i18n.__("errors.extractDetails", { rawLink: links[1] }));
+		await expect(fileLink.getDetails()).rejects.toThrow(`${i18n.__("errors.extractDetails")}: ${links[1]}`);
 	});
 
 	it("Should fail extract data-scrambled-url When the file is non-premium and HTML was changed and the link is a javascript code", async () => {
@@ -165,7 +165,7 @@ describe("FileLink Class Tests", () => {
 		});
 
 		const fileLink = new FileLink(links[1]);
-		await expect(fileLink.getDetails()).rejects.toThrow(i18n.__("errors.extractDetails", { rawLink: links[1] }));
+		await expect(fileLink.getDetails()).rejects.toThrow(`${i18n.__("errors.extractDetails")}: ${links[1]}`);
 	});
 
 	it("Should extract details When the file is non-premium and is setted scraping headers", async () => {
@@ -205,7 +205,7 @@ describe("FileLink Class Tests", () => {
 		});
 
 		const fileLink = new FileLink(links[1]);
-		await expect(fileLink.getDetails()).rejects.toThrow(i18n.__("errors.extractDetails", { rawLink: links[1] }));
+		await expect(fileLink.getDetails()).rejects.toThrow(`${i18n.__("errors.extractDetails")}: ${links[1]}`);
 	});
 
 	it("Should extract details When the file is premium", async () => {

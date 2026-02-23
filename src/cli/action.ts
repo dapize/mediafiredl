@@ -2,7 +2,6 @@ import path from "node:path";
 import process from "node:process";
 
 import chalk from "chalk";
-import type { Command } from "commander";
 
 import { i18n } from "@i18n/i18n.ts";
 import { Downloader } from "@services/Downloader/index.ts";
@@ -24,7 +23,6 @@ export const action = async (
 		headersFile?: string;
 		exportDefaultHeaders?: boolean | string;
 	},
-	command: Command,
 ) => {
 	const { maxDownloads, inputFile, details, inspect, beautify, headersFile, exportDefaultHeaders } = options;
 
@@ -81,8 +79,6 @@ export const action = async (
 		} else {
 			console.error(chalk.red.bold(i18n.__("errors.unknown")));
 		}
-		console.log("\n");
-		command.outputHelp();
 		process.exit(1);
 	}
 };

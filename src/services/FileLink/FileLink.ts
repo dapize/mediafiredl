@@ -64,14 +64,14 @@ export class FileLink {
 
 		let directLinkMatch = html.match(/<a[^>]*aria-label="Download file"[^>]*href="([^"]+)"/);
 		if (!directLinkMatch) {
-			throw new Error(i18n.__("errors.extractDetails", { rawLink }));
+			throw new Error(`${i18n.__("errors.extractDetails")}: ${rawLink}`);
 		}
 
 		let pureLink = directLinkMatch[1];
 		if (pureLink.includes("javascript:")) {
 			directLinkMatch = html.match(/<a[^>]*aria-label="Download file"[^>]*data-scrambled-url="([^"]+)"/);
 			if (!directLinkMatch) {
-				throw new Error(i18n.__("errors.extractDetails", { rawLink }));
+				throw new Error(`${i18n.__("errors.extractDetails")}: ${rawLink}`);
 			}
 			pureLink = atob(directLinkMatch[1]);
 		}
@@ -80,14 +80,14 @@ export class FileLink {
 		const fileSizeMatch = html.match(/Download \(([\d.]+\s?[KMGT]?[B])\)/);
 
 		if (!directLinkMatch || !fileNameMatch || !fileSizeMatch) {
-			throw new Error(i18n.__("errors.extractDetails", { rawLink }));
+			throw new Error(`${i18n.__("errors.extractDetails")}: ${rawLink}`);
 		}
 
 		// fallback logic for new download page UI
 		if (pureLink === "#") {
 			const retryNumber = retryCount + 1;
 			if (retryNumber >= 3) {
-				throw new Error(i18n.__("errors.extractDetails", { rawLink }));
+				throw new Error(`${i18n.__("errors.extractDetails")}: ${rawLink}`);
 			}
 			return await this.extractDetailsFromNoPremiumLink(scrapingHeaders, retryNumber);
 		}

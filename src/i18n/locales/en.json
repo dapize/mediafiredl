@@ -20,23 +20,23 @@
     "size": "Size"
   },
   "errors": {
-    "notFoundInputFile": "Input file not found: {{filePath}}",
+    "notFoundInputFile": "Input file not found",
     "inputFileAndArgLink": "Cannot use both input file and direct links simultaneously.",
     "noLinks": "No links provided.",
     "invalidLinks": "Invalid Links",
     "unknown": "An unknown error occurred.",
-    "extractDetails": "Could not extract download link or file name from {{rawLink}}",
+    "extractDetails": "Could not extract download link or file name from",
     "fetchPureLink": "Failed to fetch headers from pure link: {{statusText}}",
     "invalidformat": "Invalid format: {{measurement}}",
     "invalidUnit": "Invalid unit: {{unit}}",
     "failedDownload": "Failed to download {{fileName}}: {{responseStatus}} {{responseStatusText}}",
-    "notFoundHeadersFile": "Headers file not found: {{path}}",
+    "notFoundHeadersFile": "Headers file not found",
     "jsonParsedInvalid": "JSON must be an object with key-value pairs",
     "jsonFormatInvalid": "Invalid JSON format",
     "failedLoadHeaders": "Failed to load custom headers",
     "invalidMaxDownloads": "Invalid maximum number of downloads: {{value}}",
     "writeFile": "File write error: {{message}}",
-    "emptyResponse": "Empty response for: {{fileName}} | {{link}}",
+    "emptyResponse": "Empty response for",
     "gettingFolderKey": "Error getting the folder key"
   },
   "warnings": {
@@ -45,12 +45,12 @@
     "acceptEncodingMissing": "\"Accept-Encoding\" not specified. Binary files may be corrupted. Recommended: \"identity\"",
     "acceptEncodingInvalid": "\"Accept-Encoding: {{valueHeader}}\" may cause file corruption. Recommended: \"identity\"",
     "userAgentMissing": "\"User-Agent\" not specified. Some servers may block the request.",
-    "deletePartial": "Could not delete partial file {{filePath}}"
+    "deletePartial": "Could not delete partial file"
   },
   "messages": {
     "downloadCompleted": "¡Download completed!",
-    "headersExportedTo": "Default headers exported to: {{path}}",
-    "exportedHeaders": "You can now edit this file and use it with: -H {{path}}",
+    "headersExportedTo": "Default headers exported to",
+    "exportedHeaders": "You can now edit this file and use it with",
     "softwareUseful": "Please, if you find this software useful, leave me a star on GitHub",
     "operationCancelled": "Operation cancelled by the user (Ctrl+C)",
     "exportCancelled": "Export canceled!"
@@ -61,6 +61,6 @@
   },
   "prompts": {
     "despiteWarnings": "Do you wish to continue despite the warnings?",
-    "fileExists": "The file already exists: {{path}}"
+    "fileExists": "The file already exists"
   }
 }

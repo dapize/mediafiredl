@@ -62,7 +62,7 @@ const parseHTTPRaw = (content: string): IHeaders => {
 
 const parseFile = (filePath: string): IHeaders => {
 	if (!fs.existsSync(filePath)) {
-		throw new Error(i18n.__("errors.notFoundHeadersFile", { path: filePath }));
+		throw new Error(`${i18n.__("errors.notFoundHeadersFile")}: ${filePath}`);
 	}
 
 	const content = fs.readFileSync(filePath, "utf-8").trim();
@@ -108,7 +108,7 @@ const exportDefaultHeaders = async (outputPath?: string) => {
 
 	if (fs.existsSync(resolvedPath)) {
 		const overwrite = await select({
-			message: chalk.cyan(i18n.__("prompts.fileExists", { path: resolvedPath })),
+			message: chalk.cyan(`${i18n.__("prompts.fileExists")}: ${resolvedPath}`),
 			choices: [
 				{ name: i18n.__("answers.no"), value: false },
 				{ name: i18n.__("answers.yes"), value: true },
@@ -125,8 +125,8 @@ const exportDefaultHeaders = async (outputPath?: string) => {
 		.join("\n");
 	fs.writeFileSync(resolvedPath, content, "utf-8");
 
-	console.log(chalk.green(i18n.__("messages.headersExportedTo", { path: resolvedPath })));
-	console.log(chalk.cyan(`\n${i18n.__("messages.exportedHeaders", { path: path.basename(resolvedPath) })}`));
+	console.log(`${chalk.green(i18n.__("messages.headersExportedTo"))}: ${resolvedPath}`);
+	console.log(`${chalk.cyan(`${i18n.__("messages.exportedHeaders")}`)}: -H ${path.basename(resolvedPath)}`);
 	process.exit(0);
 };
 

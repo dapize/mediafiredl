@@ -137,7 +137,7 @@ export class Downloader extends Events {
 			);
 		}
 		if (!response.body) {
-			throw new Error(i18n.__("errors.emptyResponse", { name: fileName, link: url }));
+			throw new Error(`${i18n.__("errors.emptyResponse")}: ${fileName} ${url}`);
 		}
 		const reader = response.body.getReader();
 		const absolutePath = path.resolve(output);
@@ -205,7 +205,7 @@ export class Downloader extends Events {
 				try {
 					fs.unlinkSync(filePath);
 				} catch (_err) {
-					console.warn(i18n.__("warnings.deletePartial", { filePath }));
+					console.warn(`${i18n.__("warnings.deletePartial")}: ${filePath}`);
 				}
 			}
 			throw error;
