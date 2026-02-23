@@ -11,7 +11,8 @@
     "inspect": "Obtiene información detallada sobre el enlace proporcionado sin descargar el archivo. Esto incluye el nombre del archivo, tamaño, tipo y otros metadatos disponibles.",
     "beautify": "Devuelve con un formato embellecedor los datos a mostrar para la opción 'inspect'.",
     "headersFile": "Ruta al archivo de encabezados HTTP personalizados (formato raw o JSON)",
-    "exportHeaders": "Exportar encabezados predeterminados a un archivo (predeterminado: ./headers.txt)"
+    "exportHeaders": "Exportar encabezados predeterminados a un archivo (predeterminado: ./headers.txt)",
+    "bufferSize": "Tamaño del buffer en RAM para las descargas (en megabytes)"
   },
   "metadata": {
     "link": "Enlace:",
@@ -34,9 +35,10 @@
     "jsonParsedInvalid": "El archivo JSON debe ser un objeto con pares clave-valor",
     "jsonFormatInvalid": "Formato JSON no válido",
     "failedLoadHeaders": "No se pudieron cargar los encabezados personalizados",
-    "writeFile": "Error de escritura de archivo: {{message}}",
+    "invalidMaxDownloads": "Número máximo de descargas no válido: {{value}}",
     "emptyResponse": "Respuesta vacía para",
-    "gettingFolderKey": "Error al obtener la clave de la carpeta"
+    "gettingFolderKey": "Error al obtener la clave de la carpeta",
+    "invalidBufferSize": "Número de tamaño de búfer no válido: {{value}}"
   },
   "warnings": {
     "titleWarnings": "Advertencias de configuración de encabezados",

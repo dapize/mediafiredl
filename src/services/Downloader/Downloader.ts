@@ -1,6 +1,8 @@
 import Events from "node:events";
 import fs from "node:fs";
 import path from "node:path";
+import { PassThrough, Transform } from "node:stream";
+import { pipeline } from "node:stream/promises";
 
 import chalk from "chalk";
 
@@ -27,6 +29,7 @@ export class Downloader extends Events {
 	private inspect: boolean;
 	private beautify: boolean;
 	private currentHeaders: IHeaders;
+	private bufferSize: number;
 
 	constructor(config: IDownloaderConfig) {
 		super();
@@ -39,6 +42,7 @@ export class Downloader extends Events {
 		this.invalidLinks = new Set();
 		this.downloadedFiles = 0;
 		this.currentHeaders = downloadHeaders;
+		this.bufferSize = config.bufferSize;
 	}
 
 	public setCustomHeaders(headers: IHeaders): void {
@@ -139,81 +143,20 @@ export class Downloader extends Events {
 		if (!response.body) {
 			throw new Error(`${i18n.__("errors.emptyResponse")}: ${fileName} ${url}`);
 		}
-		const reader = response.body.getReader();
+
 		const absolutePath = path.resolve(output);
 		checkAndCreateFolder(absolutePath);
 		const filePath = path.join(absolutePath, fileName);
+
 		const progressBar = this.newProgressBar(fileName, size);
 
 		await this.writeToDisk({
-			reader,
+			responseBody: response.body,
 			filePath,
 			progressBar,
 		});
 
 		this.downloadedFiles += 1;
-
-		progressBar.instance.stop();
-	}
-
-	private async extractFolderLinks(link: string, output: string): Promise<void> {
-		const folderLink = new FolderLink(link);
-		const links = await folderLink.getLinks();
-		const folderName = folderLink.getFolderName();
-		const finalPath = path.resolve(output, folderName);
-		this.addLinks(links, finalPath);
-	}
-
-	private checkToCompleted() {
-		const returnData = {
-			downloadedFiles: this.downloadedFiles,
-			invalidLinks: this.invalidLinks,
-		};
-		if (!this.linksProcessing.size) {
-			this.emit("completed", returnData);
-			return;
-		}
-		Promise.all(this.linksProcessing).finally(() => {
-			setTimeout(() => {
-				this.emit("completed", returnData);
-			}, 1000);
-		});
-	}
-
-	private async writeToDisk({ reader, filePath, progressBar }: IWriteDiskArgs): Promise<void> {
-		const fileStream = fs.createWriteStream(filePath);
-		fileStream.on("error", (streamError) => {
-			throw new Error(i18n.__("errors.writeFile", { message: streamError.message }));
-		});
-
-		let downloaded = 0;
-
-		try {
-			while (true) {
-				const { done, value } = await reader.read();
-				if (done) break;
-				if (value) {
-					downloaded += value.length;
-					progressBar.update(downloaded);
-					fileStream.write(value);
-				}
-			}
-			progressBar.completed();
-		} catch (error) {
-			if (!fileStream.closed) fileStream.close();
-			if (fs.existsSync(filePath)) {
-				try {
-					fs.unlinkSync(filePath);
-				} catch (_err) {
-					console.warn(`${i18n.__("warnings.deletePartial")}: ${filePath}`);
-				}
-			}
-			throw error;
-		} finally {
-			if (!fileStream.closed && !fileStream.destroyed) {
-				fileStream.end();
-			}
-		}
 	}
 
 	private newProgressBar(fileName: string, totalSize: number) {
@@ -247,5 +190,64 @@ export class Downloader extends Events {
 				this.update(totalSize);
 			},
 		};
+	}
+
+	private async writeToDisk({ responseBody, filePath, progressBar }: IWriteDiskArgs): Promise<void> {
+		const fileStream = fs.createWriteStream(filePath);
+		const ramBuffer = new PassThrough({
+			highWaterMark: this.bufferSize * 1024 * 1024,
+		});
+		let downloaded = 0;
+
+		const progress = new Transform({
+			transform(chunk, _, cb) {
+				downloaded += chunk.length;
+				progressBar.update(downloaded);
+				cb(null, chunk);
+			},
+		});
+
+		const downloadPromise = pipeline(responseBody, progress, ramBuffer);
+		const writePromise = pipeline(ramBuffer, fileStream);
+
+		try {
+			await Promise.all([downloadPromise, writePromise]);
+		} catch (error) {
+			if (fs.existsSync(filePath)) {
+				try {
+					fs.unlinkSync(filePath);
+				} catch (_err) {
+					console.warn(`${i18n.__("warnings.deletePartial")}: ${filePath}`);
+				}
+			}
+			throw error;
+		} finally {
+			progressBar.completed();
+			progressBar.instance.stop();
+		}
+	}
+
+	private async extractFolderLinks(link: string, output: string): Promise<void> {
+		const folderLink = new FolderLink(link);
+		const links = await folderLink.getLinks();
+		const folderName = folderLink.getFolderName();
+		const finalPath = path.resolve(output, folderName);
+		this.addLinks(links, finalPath);
+	}
+
+	private checkToCompleted() {
+		const returnData = {
+			downloadedFiles: this.downloadedFiles,
+			invalidLinks: this.invalidLinks,
+		};
+		if (!this.linksProcessing.size) {
+			this.emit("completed", returnData);
+			return;
+		}
+		Promise.all(this.linksProcessing).finally(() => {
+			setTimeout(() => {
+				this.emit("completed", returnData);
+			}, 1000);
+		});
 	}
 }

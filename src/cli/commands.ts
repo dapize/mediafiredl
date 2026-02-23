@@ -16,10 +16,11 @@ program
 	.option("-m, --max-downloads <number>", i18n.__("arguments.maxDownloads"), "2")
 	.option("-i, --input-file <path>", i18n.__("arguments.inputFile"))
 	.option("-d, --details", i18n.__("arguments.details"), false)
-	.option("--inspect", i18n.__("arguments.inspect"), false)
-	.option("--beautify", i18n.__("arguments.beautify"), false)
+	.option("--inspect <url>", i18n.__("arguments.inspect"), false)
 	.option("-H, --headers-file <path>", i18n.__("arguments.headersFile"))
-	.option("--export-default-headers [path]", i18n.__("arguments.exportHeaders"))
+	.option("--export-default-headers <path>", i18n.__("arguments.exportHeaders"))
+	.option("-B, --buffer-size <number>", i18n.__("arguments.bufferSize"), "128")
+	.option("--beautify", i18n.__("arguments.beautify"), false)
 	.action(action);
 
 program.addHelpText(

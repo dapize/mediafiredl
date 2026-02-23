@@ -11,7 +11,8 @@
     "inspect": "Get detailed information about the provided link without downloading the file. This includes file name, size and other available metadata.",
     "beautify": "Return with a beautify format the data to show for the 'inspect' option.",
     "headersFile": "Path to custom HTTP headers file (raw or JSON format)",
-    "exportHeaders": "Export default headers to file (default: ./headers.txt)"
+    "exportHeaders": "Export default headers to file (default: ./headers.txt)",
+    "bufferSize": "RAM buffer size for downloads (in megabytes)"
   },
   "metadata": {
     "link": "Link",
@@ -35,9 +36,9 @@
     "jsonFormatInvalid": "Invalid JSON format",
     "failedLoadHeaders": "Failed to load custom headers",
     "invalidMaxDownloads": "Invalid maximum number of downloads: {{value}}",
-    "writeFile": "File write error: {{message}}",
     "emptyResponse": "Empty response for",
-    "gettingFolderKey": "Error getting the folder key"
+    "gettingFolderKey": "Error getting the folder key",
+    "invalidBufferSize": "Invalid buffer size number: {{value}}"
   },
   "warnings": {
     "titleWarnings": "Headers Configuration Warnings",

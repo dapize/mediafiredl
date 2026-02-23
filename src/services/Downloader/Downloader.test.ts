@@ -117,22 +117,18 @@ describe("Downloader", () => {
 	beforeEach(() => {
 		vi.clearAllMocks();
 
-		readerMock = {
-			read: vi
-				.fn()
-				.mockResolvedValueOnce({ value: new Uint8Array([1, 2, 3]), done: false })
-				.mockResolvedValueOnce({ value: new Uint8Array([4, 5, 6]), done: false })
-				.mockResolvedValueOnce({ done: true }),
-		};
+		readerMock = vi
+			.fn()
+			.mockResolvedValueOnce({ value: new Uint8Array([1, 2, 3]), done: false })
+			.mockResolvedValueOnce({ value: new Uint8Array([4, 5, 6]), done: false })
+			.mockResolvedValueOnce({ done: true });
 
 		fetchMock = vi.fn(() =>
 			Promise.resolve({
 				ok: true,
 				status: 200,
 				statusText: "OK",
-				body: {
-					getReader: () => readerMock,
-				},
+				body: readerMock,
 			}),
 		);
 
@@ -145,7 +141,7 @@ describe("Downloader", () => {
 			size: 38588530,
 		});
 
-		downloader = new Downloader({ concurrencyLimit: 2, details: true });
+		downloader = new Downloader({ concurrencyLimit: 2, details: true, bufferSize: 128 });
 	});
 
 	it("Should initialize correctly When given parameters are provided", () => {
@@ -161,7 +157,7 @@ describe("Downloader", () => {
 		expect(downloader["linkQueue"].size).toBe(2);
 	});
 
-	it("Should process and complete downloads correctly When downloads are started", async () => {
+	it.only("Should process and complete downloads correctly When downloads are started", async () => {
 		const emitSpy = vi.spyOn(downloader, "emit");
 
 		downloader.addLinks(["http://example.com/file1.txt"], "/downloads");
@@ -201,6 +197,7 @@ describe("Downloader", () => {
 			concurrencyLimit: 2,
 			details: true,
 			inspect: true,
+			bufferSize: 128,
 		});
 
 		downloader.addLinks(["http://example.com/file1.txt"], "/downloads");

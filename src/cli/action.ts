@@ -22,9 +22,10 @@ export const action = async (
 		details: boolean;
 		headersFile?: string;
 		exportDefaultHeaders?: boolean | string;
+		bufferSize: string;
 	},
 ) => {
-	const { maxDownloads, inputFile, details, inspect, beautify, headersFile, exportDefaultHeaders } = options;
+	const { maxDownloads, inputFile, details, inspect, beautify, headersFile, exportDefaultHeaders, bufferSize } = options;
 
 	try {
 		// Exporting default headers
@@ -46,6 +47,10 @@ export const action = async (
 		if (Number.isNaN(maxDownloadsNum) || maxDownloadsNum < 1) {
 			throw new Error(i18n.__("errors.invalidMaxDownloads", { value: maxDownloads }));
 		}
+		const maxBufferSize = parseInt(bufferSize, 10);
+		if (Number.isNaN(maxBufferSize) || maxBufferSize < 1) {
+			throw new Error(i18n.__("errors.invalidBufferSize", { value: bufferSize }));
+		}
 
 		// Init
 		const downloader = new Downloader({
@@ -53,6 +58,7 @@ export const action = async (
 			details,
 			inspect,
 			beautify,
+			bufferSize: maxBufferSize,
 		});
 
 		if (headersFile) {

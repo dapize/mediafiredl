@@ -46,6 +46,7 @@
           "options": {
             "groups": [
               "node:*",
+              "node:*/*",
               "deno:*",
               ":BLANK_LINE:",
               "builtin",

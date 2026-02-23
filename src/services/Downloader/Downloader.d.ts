@@ -7,6 +7,7 @@ export interface IDownloaderConfig {
 	details?: boolean;
 	inspect?: boolean;
 	beautify?: boolean;
+	bufferSize: number;
 }
 
 export interface IPayloadFormatBar {
@@ -26,7 +27,7 @@ export interface ICustomSingleBar {
 }
 
 export interface IWriteDiskArgs {
-	reader: ReadableStreamDefaultReader<Uint8Array>;
+	responseBody: ReadableStream<Uint8Array<ArrayBuffer>>;
 	filePath: string;
 	progressBar: ICustomSingleBar;
 }
