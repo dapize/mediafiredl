@@ -55,7 +55,7 @@ export class FileLink {
 		return await this.extractDetailsFromNoPremiumLink();
 	}
 
-	private async extractDetailsFromNoPremiumLink(headers?: IHeaders): Promise<ILinkDetails> {
+	private async extractDetailsFromNoPremiumLink(headers?: IHeaders, retryCount = 0): Promise<ILinkDetails> {
 		const rawLink = this.rawLink;
 		const response = await fetch(rawLink, {
 			headers: headers || {},
@@ -85,7 +85,11 @@ export class FileLink {
 
 		// fallback logic for new download page UI
 		if (pureLink === "#") {
-			return await this.extractDetailsFromNoPremiumLink(scrapingHeaders);
+			const retryNumber = retryCount + 1;
+			if (retryNumber >= 3) {
+				throw new Error(i18n.__("errors.extractDetails", { rawLink }));
+			}
+			return await this.extractDetailsFromNoPremiumLink(scrapingHeaders, retryNumber);
 		}
 
 		const data = {
