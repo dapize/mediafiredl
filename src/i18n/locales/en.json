@@ -36,7 +36,8 @@
     "failedLoadHeaders": "Failed to load custom headers",
     "invalidMaxDownloads": "Invalid maximum number of downloads: {{value}}",
     "writeFile": "File write error: {{message}}",
-    "emptyResponse": "Empty response for: {{fileName}} | {{link}}"
+    "emptyResponse": "Empty response for: {{fileName}} | {{link}}",
+    "gettingFolderKey": "Error getting the folder key"
   },
   "warnings": {
     "titleWarnings": "Headers Configuration Warnings",

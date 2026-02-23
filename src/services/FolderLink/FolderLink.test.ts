@@ -1,5 +1,7 @@
 import { beforeEach, describe, expect, it, type Mock, vi } from "vitest";
 
+import { i18n } from "@i18n/i18n.ts";
+
 import { FolderLink } from "./FolderLink.ts";
 
 const exampleLinks = [
@@ -79,5 +81,33 @@ describe("FolderLink Class Tests", () => {
 		]);
 
 		expect(fetch).toHaveBeenCalledTimes(2);
+	});
+
+	it("Should get the folder name When the link folder is correct", () => {
+		const folderLink = new FolderLink(exampleLinks[2]);
+		const folderName = folderLink.getFolderName();
+		expect(folderName).toEqual("no more slimes");
+	});
+
+	it("Should get the folder name by folder key When the link folder dont have folder name", () => {
+		let folderLinkIncompleted: string | string[] = exampleLinks[2].split("/");
+		folderLinkIncompleted.pop();
+		const folderKey = folderLinkIncompleted[folderLinkIncompleted.length - 1];
+		folderLinkIncompleted = folderLinkIncompleted.join("/");
+
+		const folderLink = new FolderLink(folderLinkIncompleted as string);
+		const folderName = folderLink.getFolderName();
+		expect(folderName).toEqual(folderKey);
+	});
+
+	it("Should get the folder key When the url is correct", () => {
+		const folderLink = new FolderLink(exampleLinks[2]);
+		const folderKey = folderLink["getFolderKey"]();
+		expect(folderKey).toEqual("xqub019s2e2l1");
+	});
+
+	it("Should fail to get the folder key When the url is incorrect", () => {
+		const folderLink = new FolderLink("https://www.mediafire.com/folder/no_more_slimes");
+		expect(() => folderLink["getFolderKey"]()).toThrowError(i18n.__("errors.gettingFolderKey"));
 	});
 });

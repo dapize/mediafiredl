@@ -35,7 +35,8 @@
     "jsonFormatInvalid": "Formato JSON no válido",
     "failedLoadHeaders": "No se pudieron cargar los encabezados personalizados",
     "writeFile": "Error de escritura de archivo: {{message}}",
-    "emptyResponse": "Respuesta vacía para: {{fileName}} | {{link}}"
+    "emptyResponse": "Respuesta vacía para: {{fileName}} | {{link}}",
+    "gettingFolderKey": "Error al obtener la clave de la carpeta"
   },
   "warnings": {
     "titleWarnings": "Advertencias de configuración de encabezados",
