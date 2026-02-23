@@ -8,7 +8,7 @@ import { i18n } from "@i18n/i18n.ts";
 import { Downloader } from "@services/Downloader/index.ts";
 
 import { HeadersHandler } from "@helpers/HeadersHandler/index.ts";
-import { readLinksFromFile } from "@helpers/readLinksFromFile.ts";
+import { readLinksFromFile } from "@helpers/readLinksFromFile/index.ts";
 
 import { checkAndCreateFolder } from "@utils/checkAndCreateFolder/index.ts";
 
