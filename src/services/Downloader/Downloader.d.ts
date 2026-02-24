@@ -1,40 +1,42 @@
-import { SingleBar } from "cli-progress";
-import type { ILinkDetails } from "../FileLink/index.ts";
+import type { SingleBar } from 'cli-progress';
+
+import type { ILinkDetails } from '@services/FileLink/index.ts';
 
 export interface IDownloaderConfig {
-  concurrencyLimit: number;
-  details?: boolean;
-  inspect?: boolean;
-  beautify?: boolean;
+	concurrencyLimit: number;
+	details?: boolean;
+	inspect?: boolean;
+	beautify?: boolean;
+	bufferSize: number;
 }
 
 export interface IPayloadFormatBar {
-  fileName: string;
-  elapsed: string;
-  percentage: number;
-  value: string;
-  total: string;
-  speed: string;
-  eta: string;
+	fileName: string;
+	elapsed: string;
+	percentage: number;
+	value: string;
+	total: string;
+	speed: string;
+	eta: string;
 }
 
-export interface CustomSingleBar {
-  completed: () => void;
-  update: (downloader: number) => void;
-  instance: SingleBar;
+export interface ICustomSingleBar {
+	completed: () => void;
+	update: (downloader: number) => void;
+	instance: SingleBar;
 }
 
 export interface IWriteDiskArgs {
-  reader: ReadableStreamDefaultReader<Uint8Array>;
-  filePath: string;
-  progressBar: CustomSingleBar;
+	responseBody: ReadableStream<Uint8Array<ArrayBuffer>>;
+	filePath: string;
+	progressBar: ICustomSingleBar;
 }
 
 export interface ILinkQueue {
-  link: string;
-  output: string;
+	link: string;
+	output: string;
 }
 
 export interface IMetadata extends ILinkDetails {
-  link: string;
+	link: string;
 }

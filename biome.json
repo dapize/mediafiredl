@@ -1,0 +1,97 @@
+{
+  "$schema": "https://biomejs.dev/schemas/2.4.4/schema.json",
+  "vcs": {
+    "enabled": false,
+    "clientKind": "git",
+    "useIgnoreFile": false
+  },
+  "files": {
+    "ignoreUnknown": false
+  },
+  "formatter": {
+    "enabled": true,
+    "indentStyle": "tab",
+    "formatWithErrors": false,
+    "indentWidth": 2,
+    "lineWidth": 140
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "recommended": true,
+      "style": {
+        "noNonNullAssertion": "off",
+        "useImportType": "error"
+      },
+      "suspicious": {
+        "noExplicitAny": "error"
+      }
+    }
+  },
+  "javascript": {
+    "formatter": {
+      "enabled": true,
+      "jsxQuoteStyle": "double",
+      "bracketSameLine": false,
+      "bracketSpacing": true,
+      "quoteStyle": "double"
+    }
+  },
+  "assist": {
+    "enabled": true,
+    "actions": {
+      "source": {
+        "organizeImports": {
+          "level": "on",
+          "options": {
+            "groups": [
+              "node:*",
+              "node:*/*",
+              "deno:*",
+              ":BLANK_LINE:",
+              "builtin",
+              [
+                ":PACKAGE:",
+                "!@pages/**",
+                "!@components/**",
+                "!@features/**",
+                "!@assets/**",
+                "!@helpers/**",
+                "!@routes/**",
+                "!@utils/**",
+                "!@services/**",
+                "!@i18n/**",
+                "!@theme/**",
+                "!@hooks/**",
+                "!@tabler/**"
+              ],
+              ":BLANK_LINE:",
+              "@theme/**",
+              "@i18n/**",
+              "@services/**",
+              "@hooks/**",
+              ":BLANK_LINE:",
+              "@routes/**",
+              ":BLANK_LINE:",
+              "@features/**",
+              ":BLANK_LINE:",
+              "@pages/**",
+              ":BLANK_LINE:",
+              "@components/**",
+              ":BLANK_LINE:",
+              "@tabler/**",
+              ":BLANK_LINE:",
+              "@assets/**",
+              ":BLANK_LINE:",
+              "@helpers/**",
+              ":BLANK_LINE:",
+              "@utils/**",
+              ":BLANK_LINE:",
+              ":PATH:"
+            ]
+          }
+        }
+      }
+    }
+  }
+}

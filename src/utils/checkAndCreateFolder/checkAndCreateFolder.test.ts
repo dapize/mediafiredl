@@ -1,33 +1,35 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
-import fs from "fs";
-import { checkAndCreateFolder } from "./checkAndCreateFolder.ts";
+import fs from 'node:fs';
 
-vi.mock("fs");
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-describe("checkAndCreateFolder Utility Function", () => {
-  const mockPath = "/fake/path/to/folder";
+import { checkAndCreateFolder } from './checkAndCreateFolder.ts';
 
-  beforeEach(() => {
-    vi.clearAllMocks();
-  });
+vi.mock('fs');
 
-  it("Should not create the folder When it already exists", () => {
-    vi.spyOn(fs, "existsSync").mockReturnValue(true);
-    const mkdirSyncSpy = vi.spyOn(fs, "mkdirSync");
+describe('checkAndCreateFolder Utility Function', () => {
+	const mockPath = '/fake/path/to/folder';
 
-    checkAndCreateFolder(mockPath);
+	beforeEach(() => {
+		vi.clearAllMocks();
+	});
 
-    expect(fs.existsSync).toHaveBeenCalledWith(mockPath);
-    expect(mkdirSyncSpy).not.toHaveBeenCalled();
-  });
+	it('Should not create the folder When it already exists', () => {
+		vi.spyOn(fs, 'existsSync').mockReturnValue(true);
+		const mkdirSyncSpy = vi.spyOn(fs, 'mkdirSync');
 
-  it("Should create the folder When it does not exist", () => {
-    vi.spyOn(fs, "existsSync").mockReturnValue(false);
-    const mkdirSyncSpy = vi.spyOn(fs, "mkdirSync");
+		checkAndCreateFolder(mockPath);
 
-    checkAndCreateFolder(mockPath);
+		expect(fs.existsSync).toHaveBeenCalledWith(mockPath);
+		expect(mkdirSyncSpy).not.toHaveBeenCalled();
+	});
 
-    expect(fs.existsSync).toHaveBeenCalledWith(mockPath);
-    expect(mkdirSyncSpy).toHaveBeenCalledWith(mockPath, { recursive: true });
-  });
+	it('Should create the folder When it does not exist', () => {
+		vi.spyOn(fs, 'existsSync').mockReturnValue(false);
+		const mkdirSyncSpy = vi.spyOn(fs, 'mkdirSync');
+
+		checkAndCreateFolder(mockPath);
+
+		expect(fs.existsSync).toHaveBeenCalledWith(mockPath);
+		expect(mkdirSyncSpy).toHaveBeenCalledWith(mockPath, { recursive: true });
+	});
 });

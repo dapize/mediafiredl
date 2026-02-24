@@ -1,1 +1,1 @@
-export { convertToBytes } from "./convertToBytes.ts";
+export { convertToBytes } from './convertToBytes.ts';

@@ -1,7 +1,9 @@
+/** biome-ignore-all lint/suspicious/noControlCharactersInRegex: Have to be like that is a edge case*/
+/** biome-ignore-all lint/complexity/noUselessEscapeInRegex: Have to be like that is a edge case */
 const truncate = (sanitized: string, length: number): string => {
-  const uint8Array = new TextEncoder().encode(sanitized);
-  const truncated = uint8Array.slice(0, length);
-  return new TextDecoder().decode(truncated);
+	const uint8Array = new TextEncoder().encode(sanitized);
+	const truncated = uint8Array.slice(0, length);
+	return new TextDecoder().decode(truncated);
 };
 
 const illegalRe = /[\/\?<>\\:\*\|":]/g;
@@ -11,11 +13,11 @@ const reservedRe = /^\.+$/;
 const windowsReservedRe = /^(con|prn|aux|nul|com[0-9]|lpt[0-9])(\..*)?$/i;
 
 export const sanitizeFileName = (input: string) => {
-  const replacement = "";
-  const sanitized = input
-    .replace(illegalRe, replacement)
-    .replace(controlRe, replacement)
-    .replace(reservedRe, replacement)
-    .replace(windowsReservedRe, replacement);
-  return truncate(sanitized, 255);
+	const replacement = '';
+	const sanitized = input
+		.replace(illegalRe, replacement)
+		.replace(controlRe, replacement)
+		.replace(reservedRe, replacement)
+		.replace(windowsReservedRe, replacement);
+	return truncate(sanitized, 255);
 };

@@ -1,5 +1,10 @@
 {
-    "terminal.integrated.env.windows": {
-      "NODE_OPTIONS": "--disable-warning=ExperimentalWarning"
-    }
-  }
+  "terminal.integrated.env.windows": {
+    "NODE_OPTIONS": "--disable-warning=ExperimentalWarning"
+  },
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+		"source.organizeImports.biome": "explicit",
+		"source.fixAll.biome": "explicit"
+	},
+}

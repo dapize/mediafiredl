@@ -1,34 +1,67 @@
 {
-  "app": {
-    "description": "Descarga archivos y carpetas de MediaFire"
-  },
-  "arguments": {
-    "links": "Enlaces de archivos o carpetas de MediaFire",
-    "output": "Directorio de salida (predeterminado: directorio actual)",
-    "maxDownloads": "Descargas simultáneas máximas",
-    "inputFile": "Ruta a un archivo de texto que contiene enlaces de MediaFire",
-    "details": "Habilitar salida detallada (modo detallado)",
-    "inspect": "Obtiene información detallada sobre el enlace proporcionado sin descargar el archivo. Esto incluye el nombre del archivo, tamaño, tipo y otros metadatos disponibles.",
-    "beautify": "Devuelve con un formato embellecedor los datos a mostrar para la opción 'inspect'."
-  },
-  "metadata": {
-    "link": "Enlace",
-    "directLink": "Enlace directo",
-    "fileName": "Nombre del archivo",
-    "size": "Tamaño"
-  },
-  "errors": {
-    "notFoundInputFile": "Archivo de entrada no encontrado: {{filePath}}",
-    "inputFileAndArgLink": "No se pueden utilizar simultáneamente el archivo de entrada y los enlaces directos",
-    "noLinks": "No se proporcionan enlaces.",
-    "invalidLinks": "Enlaces inválidos",
-    "unknown": "Se produjo un error desconocido.",
-    "extractDetails": "No se pudo extraer el enlace de descarga o el nombre del archivo desde {{rawLink}}",
-    "fetchPureLink": "No se pudieron obtener los encabezados del enlace puro: {{statusText}}",
-    "invalidformat": "Formato inválido",
-    "invalidUnit": "Unidad no válida"
-  },
-  "messages": {
-    "downloadCompleted": "¡Descarga completa!"
-  }
+	"app": {
+		"description": "Descarga archivos y carpetas de Mediafire.com"
+	},
+	"arguments": {
+		"links": "Enlaces de archivos o carpetas de Mediafire",
+		"output": "Directorio de salida (predeterminado: directorio actual)",
+		"maxDownloads": "Descargas simultáneas máximas",
+		"inputFile": "Ruta a un archivo de texto que contiene enlaces de Mediafire",
+		"details": "Habilitar salida detallada (modo detallado)",
+		"inspect": "Obtiene información detallada sobre el enlace proporcionado sin descargar el archivo. Esto incluye el nombre del archivo, tamaño, tipo y otros metadatos disponibles.",
+		"beautify": "Devuelve con un formato embellecedor los datos a mostrar para la opción 'inspect'.",
+		"headersFile": "Ruta al archivo de encabezados HTTP personalizados (formato raw o JSON)",
+		"exportHeaders": "Exportar encabezados predeterminados a un archivo (predeterminado: ./headers.txt)",
+		"bufferSize": "Tamaño del buffer en RAM para las descargas (en megabytes)"
+	},
+	"metadata": {
+		"link": "Enlace:",
+		"directLink": "Enlace directo",
+		"fileName": "Nombre del archivo",
+		"size": "Tamaño"
+	},
+	"errors": {
+		"notFoundInputFile": "Archivo de entrada no encontrado",
+		"inputFileAndArgLink": "No se pueden utilizar simultáneamente el archivo de entrada y los enlaces directos",
+		"noLinks": "No se proporcionarón enlaces.",
+		"invalidLinks": "Enlaces inválidos",
+		"unknown": "Se produjo un error desconocido.",
+		"extractDetails": "No se pudo extraer el enlace de descarga o el nombre del archivo desde",
+		"fetchPureLink": "No se pudieron obtener los encabezados del enlace puro: {{statusText}}",
+		"invalidformat": "Formato inválido: {{measurement}}",
+		"invalidUnit": "Unidad no válida: {{unit}}",
+		"failedDownload": "No se pudo descargar {{fileName}}: {{responseStatus}} {{responseStatusText}}",
+		"notFoundHeadersFile": "Archivo de encabezados no encontrado",
+		"jsonParsedInvalid": "El archivo JSON debe ser un objeto con pares clave-valor",
+		"jsonFormatInvalid": "Formato JSON no válido",
+		"failedLoadHeaders": "No se pudieron cargar los encabezados personalizados",
+		"invalidMaxDownloads": "Número máximo de descargas no válido: {{value}}",
+		"emptyResponse": "Respuesta vacía para",
+		"gettingFolderKey": "Error al obtener la clave de la carpeta",
+		"invalidBufferSize": "Número de tamaño de búfer no válido: {{value}}"
+	},
+	"warnings": {
+		"titleWarnings": "Advertencias de configuración de encabezados",
+		"headerLineInvalid": "Línea de encabezado no válida (falta ':')",
+		"acceptEncodingMissing": "\"Accept-Encoding\" no especificado. Los archivos binarios podrían dañarse, se recomienda: \"identity\"",
+		"acceptEncodingInvalid": "\"Accept-Encoding: {{valueHeader}}\" puede causar corrupción de archivos. Se recomienda: \"identity\"",
+		"userAgentMissing": "\"User-Agent\" no especificado. Algunos servidores pueden bloquear la solicitud.",
+		"deletePartial": "No se pudo eliminar el archivo parcial"
+	},
+	"messages": {
+		"downloadCompleted": "¡Descarga completa!",
+		"headersExportedTo": "Encabezados predeterminados exportados en",
+		"exportedHeaders": "Ahora puedes editar este archivo y usarlo con",
+		"softwareUseful": "Por favor, si ves que este software te resulta útil, déjame una estrella en Github",
+		"operationCancelled": "Operación cancelada por el usuario (Ctrl+C)",
+		"exportCancelled": "¡Exportación cancelada!"
+	},
+	"answers": {
+		"yes": "Sí",
+		"no": "No"
+	},
+	"prompts": {
+		"despiteWarnings": "¿Deseas continuar a pesar de las advertencias?",
+		"fileExists": "Ya existe el archivo"
+	}
 }

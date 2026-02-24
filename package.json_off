@@ -1,12 +1,12 @@
 {
   "name": "mediafiredl",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "description": "A simple command line software to download mediafire files",
   "main": "index.js",
   "type": "module",
   "scripts": {
     "start": "npx tsx ./src/cli/commands.ts",
-    "build": "rm -rf ./dist/mediafiredl.cjs && npx esbuild --format=cjs --target=node23 --platform=node --bundle --outfile=./dist/mediafiredl.cjs ./src/cli/commands.ts",
+    "build": "rm -rf ./dist/mediafiredl.cjs && npx esbuild --format=cjs --target=node23 --platform=node --bundle --alias:@i18n=./src/i18n --alias:@utils=./src/utils --alias:@services=./src/services --alias:@helpers=./src/helpers --outfile=./dist/mediafiredl.cjs ./src/cli/commands.ts",
     "compile": "node compile-win-arm64.js"
   },
   "keywords": [],
@@ -21,19 +21,23 @@
   },
   "devDependencies": {
     "@types/progress": "^2.0.7",
-    "@types/node": "^22.10.1",
+    "@types/node": "^25.3.0",
     "@types/cli-progress": "^3.11.6",
     "@types/i18n": "^0.13.12",
-    "@vitest/coverage-v8": "^2.1.8",
-    "esbuild": "^0.24.0",
+    "@vitest/coverage-v8": "^4.0.18",
+    "@inquirer/core": "^11.1.4",
+    "@inquirer/prompts": "^8.2.1",
+    "esbuild": "^0.27.3",
     "postject": "^1.0.0-alpha.6",
-    "tsx": "^4.19.2",
-    "vitest": "^2.1.8"
+    "tsx": "^4.21.0",
+    "vitest": "^4.0.18"
   },
   "dependencies": {
-    "commander": "^12.1.0",
-    "i18n": "^0.15.1",
-    "chalk": "^5.3.0",
+    "@inquirer/core": "^11.1.4",
+    "@inquirer/prompts": "^8.2.1",
+    "commander": "^14.0.3",
+    "i18n": "^0.15.3",
+    "chalk": "^5.6.2",
     "cli-progress": "^3.12.0"
   },
   "engines": {
