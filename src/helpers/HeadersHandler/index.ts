@@ -1,1 +1,1 @@
-export { HeadersHandler } from './HeadersHandler.ts'
+export { HeadersHandler } from './HeadersHandler.ts';

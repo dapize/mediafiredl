@@ -1,1 +1,1 @@
-export { readLinksFromFile } from "./readLinksFromFile.ts";
+export { readLinksFromFile } from './readLinksFromFile.ts';

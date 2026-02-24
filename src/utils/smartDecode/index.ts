@@ -1,1 +1,1 @@
-export { smartDecode } from './smartDecode.ts'
+export { smartDecode } from './smartDecode.ts';

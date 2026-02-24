@@ -13,7 +13,7 @@ const reservedRe = /^\.+$/;
 const windowsReservedRe = /^(con|prn|aux|nul|com[0-9]|lpt[0-9])(\..*)?$/i;
 
 export const sanitizeFileName = (input: string) => {
-	const replacement = "";
+	const replacement = '';
 	const sanitized = input
 		.replace(illegalRe, replacement)
 		.replace(controlRe, replacement)

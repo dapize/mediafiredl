@@ -1,23 +1,23 @@
-import Events from "node:events";
-import fs from "node:fs";
-import path from "node:path";
-import { PassThrough, Transform } from "node:stream";
-import { pipeline } from "node:stream/promises";
+import Events from 'node:events';
+import fs from 'node:fs';
+import path from 'node:path';
+import { PassThrough, Transform } from 'node:stream';
+import { pipeline } from 'node:stream/promises';
 
-import chalk from "chalk";
+import chalk from 'chalk';
 
-import { i18n } from "@i18n/i18n.ts";
-import { FileLink, type ILinkDetails } from "@services/FileLink/index.ts";
-import { FolderLink } from "@services/FolderLink/index.ts";
+import { i18n } from '@i18n/i18n.ts';
+import { FileLink, type ILinkDetails } from '@services/FileLink/index.ts';
+import { FolderLink } from '@services/FolderLink/index.ts';
 
-import { ProgressBar } from "@helpers/ProgressBar/index.ts";
+import { ProgressBar } from '@helpers/ProgressBar/index.ts';
 
-import { checkAndCreateFolder } from "@utils/checkAndCreateFolder/index.ts";
-import { convertMsToTime } from "@utils/convertMsToTime/index.ts";
-import { formatBytes } from "@utils/formatBytes/index.ts";
-import { downloadHeaders, type IHeaders } from "@utils/headers/index.ts";
+import { checkAndCreateFolder } from '@utils/checkAndCreateFolder/index.ts';
+import { convertMsToTime } from '@utils/convertMsToTime/index.ts';
+import { formatBytes } from '@utils/formatBytes/index.ts';
+import { downloadHeaders, type IHeaders } from '@utils/headers/index.ts';
 
-import type { IDownloaderConfig, ILinkQueue, IMetadata, IWriteDiskArgs } from "./Downloader.d.ts";
+import type { IDownloaderConfig, ILinkQueue, IMetadata, IWriteDiskArgs } from './Downloader.d.ts';
 
 export class Downloader extends Events {
 	private concurrencyLimit: number;
@@ -70,7 +70,7 @@ export class Downloader extends Events {
 		this.linkQueue.delete(firstLink);
 		const { link, output } = firstLink;
 
-		const linkProcessor = link.includes("/folder/") ? this.extractFolderLinks : this.processFileLink;
+		const linkProcessor = link.includes('/folder/') ? this.extractFolderLinks : this.processFileLink;
 		const processorPromise = linkProcessor.call(this, link, output);
 
 		this.linksProcessing.add(processorPromise);
@@ -102,10 +102,10 @@ export class Downloader extends Events {
 	private showMetadata({ link, url, fileName, size }: IMetadata) {
 		if (this.beautify) {
 			return console.log(
-				`${chalk.magenta(`${i18n.__("metadata.link")}:`)} ${link}\n` +
-					`${chalk.cyanBright(`${i18n.__("metadata.directLink")}:`)} ${url}\n` +
-					`${chalk.greenBright(`${i18n.__("metadata.fileName")}:`)} ${fileName}\n` +
-					`${chalk.blue(`${i18n.__("metadata.size")}:`)} ${formatBytes(size)}\n`,
+				`${chalk.magenta(`${i18n.__('metadata.link')}:`)} ${link}\n` +
+					`${chalk.cyanBright(`${i18n.__('metadata.directLink')}:`)} ${url}\n` +
+					`${chalk.greenBright(`${i18n.__('metadata.fileName')}:`)} ${fileName}\n` +
+					`${chalk.blue(`${i18n.__('metadata.size')}:`)} ${formatBytes(size)}\n`,
 			);
 		}
 		const jsonFormat = {
@@ -133,7 +133,7 @@ export class Downloader extends Events {
 		});
 		if (!response.ok) {
 			throw new Error(
-				i18n.__("errors.failedDownload", {
+				i18n.__('errors.failedDownload', {
 					fileName,
 					responseStatus: String(response.status),
 					responseStatusText: response.statusText,
@@ -141,7 +141,7 @@ export class Downloader extends Events {
 			);
 		}
 		if (!response.body) {
-			throw new Error(`${i18n.__("errors.emptyResponse")}: ${fileName} ${url}`);
+			throw new Error(`${i18n.__('errors.emptyResponse')}: ${fileName} ${url}`);
 		}
 
 		const absolutePath = path.resolve(output);
@@ -171,7 +171,7 @@ export class Downloader extends Events {
 				const elapsedFormated = convertMsToTime(elapsedTime);
 				const speed = downloaded / (elapsedTime / 1000);
 				const eta = (totalSize - downloaded) / (speed || 1);
-				const etaFormated = convertMsToTime(eta * 1000) || "--:--";
+				const etaFormated = convertMsToTime(eta * 1000) || '--:--';
 				const downloadedInMiB = (downloaded / 1024 / 1024).toFixed(2);
 				const percentage = totalSize > 0 ? (downloaded / totalSize) * 100 : 0;
 
@@ -217,7 +217,7 @@ export class Downloader extends Events {
 				try {
 					fs.unlinkSync(filePath);
 				} catch (_err) {
-					console.warn(`${i18n.__("warnings.deletePartial")}: ${filePath}`);
+					console.warn(`${i18n.__('warnings.deletePartial')}: ${filePath}`);
 				}
 			}
 			throw error;
@@ -241,12 +241,12 @@ export class Downloader extends Events {
 			invalidLinks: this.invalidLinks,
 		};
 		if (!this.linksProcessing.size) {
-			this.emit("completed", returnData);
+			this.emit('completed', returnData);
 			return;
 		}
 		Promise.all(this.linksProcessing).finally(() => {
 			setTimeout(() => {
-				this.emit("completed", returnData);
+				this.emit('completed', returnData);
 			}, 1000);
 		});
 	}

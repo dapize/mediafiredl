@@ -1,3 +1,3 @@
 export interface IHeaders {
-  [key: string]: string;
+	[key: string]: string;
 }

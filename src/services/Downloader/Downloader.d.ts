@@ -1,6 +1,6 @@
-import type { SingleBar } from "cli-progress";
+import type { SingleBar } from 'cli-progress';
 
-import type { ILinkDetails } from "@services/FileLink/index.ts";
+import type { ILinkDetails } from '@services/FileLink/index.ts';
 
 export interface IDownloaderConfig {
 	concurrencyLimit: number;

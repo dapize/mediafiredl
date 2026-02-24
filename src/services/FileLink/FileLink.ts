@@ -1,15 +1,15 @@
-import path from "node:path";
+import path from 'node:path';
 
-import { i18n } from "@i18n/i18n.ts";
+import { i18n } from '@i18n/i18n.ts';
 
-import { sanitizeFileName } from "@helpers/sanitizeFileName.ts";
+import { sanitizeFileName } from '@helpers/sanitizeFileName.ts';
 
-import { convertToBytes } from "@utils/convertToBytes/index.ts";
-import { scrapingHeaders } from "@utils/headers/headers.ts";
-import type { IHeaders } from "@utils/headers/index.ts";
-import { smartDecode } from "@utils/smartDecode/index.ts";
+import { convertToBytes } from '@utils/convertToBytes/index.ts';
+import { scrapingHeaders } from '@utils/headers/headers.ts';
+import type { IHeaders } from '@utils/headers/index.ts';
+import { smartDecode } from '@utils/smartDecode/index.ts';
 
-import type { ILinkDetails } from "./FileLink.d.ts";
+import type { ILinkDetails } from './FileLink.d.ts';
 
 export class FileLink {
 	private rawLink: string;
@@ -24,8 +24,8 @@ export class FileLink {
 
 	public async isAvailable(): Promise<boolean> {
 		const response = await fetch(this.rawLink, {
-			method: "HEAD",
-			redirect: "manual",
+			method: 'HEAD',
+			redirect: 'manual',
 		});
 		const status = response.status;
 
@@ -34,11 +34,11 @@ export class FileLink {
 		}
 
 		if (status === 301 || status === 302) {
-			const location = response.headers.get("location");
+			const location = response.headers.get('location');
 			if (!location) {
 				return false;
 			}
-			if (location.includes("/error.php")) {
+			if (location.includes('/error.php')) {
 				return false;
 			}
 			this.isPremium = true;
@@ -64,14 +64,14 @@ export class FileLink {
 
 		let directLinkMatch = html.match(/<a[^>]*aria-label="Download file"[^>]*href="([^"]+)"/);
 		if (!directLinkMatch) {
-			throw new Error(`${i18n.__("errors.extractDetails")}: ${rawLink}`);
+			throw new Error(`${i18n.__('errors.extractDetails')}: ${rawLink}`);
 		}
 
 		let pureLink = directLinkMatch[1];
-		if (pureLink.includes("javascript:")) {
+		if (pureLink.includes('javascript:')) {
 			directLinkMatch = html.match(/<a[^>]*aria-label="Download file"[^>]*data-scrambled-url="([^"]+)"/);
 			if (!directLinkMatch) {
-				throw new Error(`${i18n.__("errors.extractDetails")}: ${rawLink}`);
+				throw new Error(`${i18n.__('errors.extractDetails')}: ${rawLink}`);
 			}
 			pureLink = atob(directLinkMatch[1]);
 		}
@@ -80,14 +80,14 @@ export class FileLink {
 		const fileSizeMatch = html.match(/Download \(([\d.]+\s?[KMGT]?[B])\)/);
 
 		if (!directLinkMatch || !fileNameMatch || !fileSizeMatch) {
-			throw new Error(`${i18n.__("errors.extractDetails")}: ${rawLink}`);
+			throw new Error(`${i18n.__('errors.extractDetails')}: ${rawLink}`);
 		}
 
 		// fallback logic for new download page UI
-		if (pureLink === "#") {
+		if (pureLink === '#') {
 			const retryNumber = retryCount + 1;
 			if (retryNumber >= 3) {
-				throw new Error(`${i18n.__("errors.extractDetails")}: ${rawLink}`);
+				throw new Error(`${i18n.__('errors.extractDetails')}: ${rawLink}`);
 			}
 			return await this.extractDetailsFromNoPremiumLink(scrapingHeaders, retryNumber);
 		}
@@ -103,15 +103,15 @@ export class FileLink {
 
 	private async extractDetailsFromPremiumLink(): Promise<ILinkDetails> {
 		const pureLink = this.directLink as string;
-		const response = await fetch(pureLink, { method: "HEAD" });
+		const response = await fetch(pureLink, { method: 'HEAD' });
 		if (!response.ok) {
-			throw new Error(i18n.__("errors.fetchPureLink", { statusText: response.statusText }));
+			throw new Error(i18n.__('errors.fetchPureLink', { statusText: response.statusText }));
 		}
 
-		const contentDisposition = response.headers.get("Content-Disposition") as string;
+		const contentDisposition = response.headers.get('Content-Disposition') as string;
 		const fileNameMatch = contentDisposition.match(/filename="([^"]+)"/);
 		const fileName = fileNameMatch ? fileNameMatch[1] : path.basename(pureLink);
-		const contentLength = response.headers.get("Content-Length");
+		const contentLength = response.headers.get('Content-Length');
 
 		return {
 			url: pureLink,

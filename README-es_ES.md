@@ -7,15 +7,27 @@
     </p>
 </div>
 
-Un programa de terminal simple pero muy útil para descargar archivos y carpetas de mediafire.com.
+Un programa de terminal simple pero muy útil para descargar archivos y carpetas de mediafire.com, construido con Typescript, Deno y música, disfrutando de la ingeniería inversa.
+
+> 🔔 Actualización 0.4.0 super importante: Se refactorizó la manera en que se manejan las descargas para evitar un posible archivo corrupto al descargar archivos comprimidos. Actualizar porfa
 
 ## 📸 Vista previa
 
 ![Preview!](preview.gif)
 
-## ✨ Uso
+## 🔧 Instalación
+
+Solo tienes que ir a la [página de lanzamiento](https://github.com/dapize/mediafiredl/releases) para obtener el binario correcto. Los sistemas operativos compatibles son: Linux, Windows (Intel y ARM), Mac (Intel y ARM). Es portable
 
 ```bash
+## Ejemplo de una instalación en linux
+wget -c https://github.com/dapize/mediafiredl/releases/download/v0.4.0/mediafiredl_linux -O mediafiredl
+chmod +x ./mediafiredl
+```
+
+## ✨ Uso
+
+```
 Uso: mediafiredl [opciones] [links...]
 
 Descarga archivos y carpetas de Mediafire
@@ -30,20 +42,11 @@ Optiones:
   -i, --input-file <path>       Ruta a un archivo de texto que contiene enlaces de Mediafire
   -d, --details                 Habilitar salida detallada (modo detallado) (predeterminado: false)
   --inspect                     Obtiene información detallada sobre el enlace proporcionado sin descargar el archivo. (predeterminado: false)
-  --beautify                    Devuelve con un formato embellecedor los datos a mostrar para la opción 'inspect'. (predeterminado: false)
   -H, --headers-file <path>     Ruta al archivo de encabezados HTTP personalizados (formato raw o JSON)
-  --export-default-headers [path]  Exportar encabezados predeterminados a un archivo (predeterminado: ./headers.txt)
+  --export-default-headers <path>  Exportar encabezados predeterminados a un archivo (predeterminado: ./headers.txt)
+  -B, --buffer-size <number>    Tamaño del buffer en RAM para las descargas (en megabytes) (default: "64")
+  --beautify                    Devuelve con un formato embellecedor los datos a mostrar para la opción 'inspect'. (predeterminado: false)
   -h, --help                    Mostrar ayuda
-```
-
-## 🔧 Instalación
-
-Solo tienes que ir a la [página de lanzamiento](https://github.com/dapize/mediafiredl/releases) para obtener el binario correcto. Los sistemas operativos compatibles son: Linux, Windows (Intel y ARM), Mac (Intel y ARM). Es portable
-
-```bash
-## Ejemplo de una instalación en linux
-wget -c https://github.com/dapize/mediafiredl/releases/download/v0.4.0/mediafiredl_linux -O mediafiredl
-chmod +x ./mediafiredl
 ```
 
 **¡Y listo!** Eso es todo lo que necesitas para usar **mediafiredl**.
@@ -61,6 +64,19 @@ chmod +x ./mediafiredl
 #### Descarga con más detalles
 
 ![Preview!](details.gif)
+
+## 📦️ Compila tu propio MediafireDL
+
+Primero, [clona el repo de MediafireDL](https://docs.github.com/es/repositories/creating-and-managing-repositories/cloning-a-repository). Luego, ingresa al directorio mediafiredl, instala las dependencias y ejecuta el comando de compilación:
+> Obviamente tienes que tener [Deno](https://deno.com/) instalado en tu sistema primero.
+
+```bash
+cd mediafiredl
+deno install
+deno run build
+```
+
+La versión compilada de MediafireDL estará en la carpeta `bin/`.
 
 ## 💡 Contribuyendo
 

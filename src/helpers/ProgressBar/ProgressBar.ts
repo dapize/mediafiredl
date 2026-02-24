@@ -1,7 +1,7 @@
-import chalk from "chalk";
-import { MultiBar, type Options, type Params, Presets } from "cli-progress";
+import chalk from 'chalk';
+import { MultiBar, type Options, type Params, Presets } from 'cli-progress';
 
-import type { IPayloadFormatBar, IProgressBarConfig } from "./ProgressBar.d.ts";
+import type { IPayloadFormatBar, IProgressBarConfig } from './ProgressBar.d.ts';
 
 export class ProgressBar {
 	private details: boolean;
@@ -13,8 +13,8 @@ export class ProgressBar {
 			{
 				hideCursor: true,
 				format: this.formatBar.bind(this),
-				barCompleteChar: "#",
-				barIncompleteChar: "-",
+				barCompleteChar: '#',
+				barIncompleteChar: '-',
 				autopadding: true,
 			},
 			Presets.shades_classic,
@@ -22,7 +22,7 @@ export class ProgressBar {
 	}
 
 	private formatBar(_options: Options, _params: Params, payload: IPayloadFormatBar) {
-		if (!payload.elapsed) return "";
+		if (!payload.elapsed) return '';
 		const { elapsed, percentage, value, total, speed, eta, fileName } = payload;
 
 		const formattedFileName = this.formatFileName(fileName, 30);
@@ -30,13 +30,17 @@ export class ProgressBar {
 
 		if (this.details) {
 			const timeInfo = `[Elap: ${elapsed} | ETA: ${eta}]`;
-			return `${chalk.white(formattedFileName)} ${progressBar} ${chalk.green(
-				`${percentage.toFixed(0)}%`,
-			)} ${chalk.yellow(`(${value} / ${total})`)} ${chalk.magenta(speed)} ${chalk.cyanBright(timeInfo)}`;
+			return `${chalk.white(formattedFileName)} ${progressBar} ${
+				chalk.green(
+					`${percentage.toFixed(0)}%`,
+				)
+			} ${chalk.yellow(`(${value} / ${total})`)} ${chalk.magenta(speed)} ${chalk.cyanBright(timeInfo)}`;
 		} else {
-			return `${chalk.white(formattedFileName)} ${progressBar} ${chalk.green(
-				`${percentage.toFixed(0)}%`,
-			)} ${chalk.magenta(speed)} ${chalk.yellow(`[ETA: ${eta}]`)}`;
+			return `${chalk.white(formattedFileName)} ${progressBar} ${
+				chalk.green(
+					`${percentage.toFixed(0)}%`,
+				)
+			} ${chalk.magenta(speed)} ${chalk.yellow(`[ETA: ${eta}]`)}`;
 		}
 	}
 
@@ -44,13 +48,13 @@ export class ProgressBar {
 		if (fileName.length > maxLength) {
 			return `${fileName.slice(0, maxLength - 1)}…`;
 		}
-		return fileName.padEnd(maxLength, " ");
+		return fileName.padEnd(maxLength, ' ');
 	}
 
 	private generateBar(percentage: number, baseColumns: number): string {
 		const full = Math.round((percentage * baseColumns) / 100);
-		const complete = chalk.green("#".repeat(full));
-		const left = "-".repeat(baseColumns - full);
+		const complete = chalk.green('#'.repeat(full));
+		const left = '-'.repeat(baseColumns - full);
 		return `[${complete}${left}]`;
 	}
 }

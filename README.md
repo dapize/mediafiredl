@@ -7,15 +7,27 @@
     </p>
 </div>
 
-A simple but very useful terminal software to download files and folders from mediafire.com.
+A simple but very useful terminal software to download files and folders from mediafire.com, builded with Typescript, Deno and Music, enjoying of reverse engineering.
+
+> 🔔 Super important update 0.4.0: The way downloads are handled has been refactored to avoid potential file corruption when downloading compressed files. Update please
 
 ## 📸 Preview
 
 ![Preview!](preview.gif)
 
-## ✨ Usage
+## 🔧 Installation
+
+Is portable so just you have to go to the [Release Page](https://github.com/dapize/mediafiredl/releases) to get the correct binary. Supported operating systems are: Linux, Windows (Intel and ARM), Mac (Intel and ARM)
 
 ```bash
+## Example for Linux installation
+wget -c https://github.com/dapize/mediafiredl/releases/download/v0.4.0/mediafiredl_linux -O mediafiredl
+chmod +x ./mediafiredl
+```
+
+## ✨ Usage
+
+```
 Usage: mediafiredl [options] [links...]
 
 Download files and folders from Mediafire
@@ -30,20 +42,11 @@ Optiones:
   -i, --input-file <path>       Path to a text file containing Mediafire links
   -d, --details                 Enable verbose output (verbose mode) (default: false)
   --inspect                     Get detailed information about the given link without downloading the file. (default: false)
-  --beautify                    Returns beautified data to display for the 'inspect' option. (default: false)
   -H, --headers-file <path>     Path to custom HTTP headers file (raw or JSON format)
-  --export-default-headers [path]  Export default headers to file (default: ./headers.txt)
+  --export-default-headers <path>  Export default headers to file (default: ./headers.txt)
+  -B, --buffer-size <number>    RAM buffer size for downloads (in megabytes) (default: "64")
+  --beautify                    Returns beautified data to display for the 'inspect' option. (default: false)
   -h, --help                    Show help
-```
-
-## 🔧 Installation
-
-Just you have to go to the [Release Page](https://github.com/dapize/mediafiredl/releases) to get the correct binary. Supported operating systems are: Linux, Windows (Intel and ARM), Mac (Intel and ARM)
-
-```bash
-## Example for Linux installation
-wget -c https://github.com/dapize/mediafiredl/releases/download/v0.4.0/mediafiredl_linux -O mediafiredl
-chmod +x ./mediafiredl
 ```
 
 **And voila!** That's all you need to use the **mediafiredl**.
@@ -61,6 +64,19 @@ chmod +x ./mediafiredl
 #### Download with more details
 
 ![Preview!](details.gif)
+
+## 📦️ How to build your own MediafireDL
+
+First, [clone the MediafireDL git repo](https://help.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository). Then, enter the mediafiredl directory, install dependencies, and run the build script:
+> Obviously you need [Deno](https://deno.com/) installed in your system first.
+
+```bash
+cd mediafiredl
+deno install
+deno run build
+```
+
+The built version of MediafireDL will be placed in the `bin/` directory.
 
 ## 💡 Contributing
 
